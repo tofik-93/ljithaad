@@ -1,28 +1,53 @@
 "use client";
 
 import React, { useState } from "react";
+import SearchIcon from '@mui/icons-material/Search';
 
 const Sidebar = () => {
+  const [activeNav, setActiveNav] = useState("Home");
   const [internetCultureOpen, setInternetCultureOpen] = useState(false);
   const [gamesOpen, setGamesOpen] = useState(false);
   const [technologyOpen, setTechnologyOpen] = useState(false);
   const [qasOpen, setQasOpen] = useState(false);
   const [popCultureOpen, setPopCultureOpen] = useState(false);
 
+  const navItems = [
+    { label: "Home", icon: "🏠", color: '#888' },
+    { label: "Popular", icon: <SearchIcon style={{ fontSize: 20, color: '#888' }} /> },
+    { label: "Answers", icon: "💬", color: '#888' },
+  ];
+
   return (
     <aside className="sidebar" style={{ padding: 0 }}>
       <nav>
         <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
           {/* Home/Popular/Answers */}
-          <li style={{ display: 'flex', alignItems: 'center', padding: '12px 24px', fontWeight: 500, background: '#f2f4f5', borderRadius: 8, margin: '8px 8px 0 8px', color: '#878a8c', fontSize: 15 }}>
-            <span style={{ fontSize: 20, marginRight: 16 }}>🏠</span> Home
-          </li>
-          <li style={{ display: 'flex', alignItems: 'center', padding: '12px 24px', fontWeight: 500, background: '#e9ecef', borderRadius: 8, margin: '8px 8px 0 8px', color: '#878a8c', fontSize: 15 }}>
-            <span style={{ fontSize: 20, marginRight: 16 }}>🔥</span> Popular
-          </li>
-          <li style={{ display: 'flex', alignItems: 'center', padding: '12px 24px', fontWeight: 500, margin: '8px 8px 0 8px', color: '#878a8c', fontSize: 15 }}>
-            <span style={{ fontSize: 20, marginRight: 16 }}>💬</span> Answers <span style={{ color: '#ff4500', fontSize: 10, marginLeft: 4 }}>BETA</span>
-          </li>
+          {navItems.map((item) => (
+            <li
+              key={item.label}
+              onClick={() => setActiveNav(item.label)}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                padding: '12px 24px',
+                fontWeight: 500,
+                background: activeNav === item.label ? '#ff4500' : (item.label === 'Home' ? '' : item.label === 'Popular' ? '' : 'transparent'),
+                borderRadius: 8,
+                margin: '8px 8px 0 8px',
+                // color:  '#878a8c',
+                fontSize: 15,
+                cursor: 'pointer',
+                transition: 'background 0.2s, color 0.2s',
+              }}
+            >
+              <span style={{ fontSize: 20, marginRight: 16 }}>
+                {typeof item.icon === "string" ? item.icon : item.icon}
+              </span> {item.label}
+              {item.label === 'Answers' && (
+                <span style={{ color: activeNav === 'Answers' ? '#888' : '#ff4500', fontSize: 10, marginLeft: 4 }}>BETA</span>
+              )}
+            </li>
+          ))}
           {/* Divider */}
           <hr style={{ border: 'none', borderTop: '1px solid #eee', margin: '16px 0' }} />
           {/* Recent */}

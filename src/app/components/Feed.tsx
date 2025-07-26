@@ -28,9 +28,23 @@ const posts = [
 ];
 
 const Feed = () => (
-  <main className="feed-grid">
+  <main
+    style={{
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      width: '100vw',
+      minHeight: '100vh',
+      overflowY: 'auto',
+      background: '#fff',
+      padding: '24px 0',
+      boxSizing: 'border-box',
+    }}
+  >
     {posts.map((post, idx) => (
-      <PostCard key={idx} {...post} />
+      <div key={idx} style={{ width: '100%', maxWidth: 700, marginBottom: 24 }}>
+        <PostCard {...post} />
+      </div>
     ))}
   </main>
 );
