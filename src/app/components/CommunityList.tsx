@@ -8,13 +8,13 @@ const communities = [
 
 const CommunityList = () => (
   <aside className="community-list">
-    <h2 style={{ fontSize: 20, fontWeight: 700, marginBottom: 16, color: '#1a1a1b', letterSpacing: '-0.5px' }}>POPULAR COMMUNITIES</h2>
+    <h2 style={{ fontSize: 10, fontWeight: 700, marginBottom: 16, color: '#888', letterSpacing: '-0.5px' }}>POPULAR COMMUNITIES</h2>
     <ul style={{ margin: 0, padding: 0, listStyle: 'none' }}>
       {communities.map((c) => (
         <li key={c.name} style={{ display: 'flex', alignItems: 'center', marginBottom: 16 }}>
-          <span style={{ fontSize: 28, marginRight: 12 }}>{c.icon}</span>
+          <span style={{ fontSize: 14, marginRight: 12 }}>{c.icon}</span>
           <div>
-            <div style={{ fontWeight: 600 }}>{c.name}</div>
+            <div style={{ fontWeight: 400,color: '#888' }}>{c.name}</div>
             <div style={{ color: '#888', fontSize: 12 }}>{c.members} members</div>
           </div>
         </li>

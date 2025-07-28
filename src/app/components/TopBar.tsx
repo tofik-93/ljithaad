@@ -4,6 +4,7 @@ import Link from 'next/link';
 import SearchIcon from '@mui/icons-material/Search';
 import AddIcon from '@mui/icons-material/Add';
 import SmsIcon from '@mui/icons-material/Sms';
+
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 const TopBar = () => (
   <header className="topbar">
@@ -13,7 +14,7 @@ const TopBar = () => (
       <span style={{ fontWeight: 700, fontSize: 18, color: '#ff4500', marginRight: 12 }}>reddit</span>
       {/* Centered search bar with icon */}
       <div style={{ flex: 1, display: 'flex', justifyContent: 'center' }}>
-        <div style={{ display: 'flex', alignItems: 'center', background: '#f6f7f8', borderRadius: 6, border: '1px solid #eee', padding: '0 4px', minWidth: 200, width: '40%' }}>
+        <div style={{ display: 'flex', alignItems: 'center', background: '#f6f7f8', borderRadius: 16, border: '1px solid #eee', padding: '0 4px', minWidth: 200, width: '40%' }}>
           <SearchIcon style={{ color: '#888', fontSize: 20, marginRight: 4 }} />
           <input
             type="text"
@@ -36,7 +37,7 @@ const TopBar = () => (
         <button style={{ background: 'none',color: '#888', border: 'none', fontSize: 22, cursor: 'pointer' }} title="Notifications"><NotificationsNoneIcon/></button>
         {/* Profile Avatar */}
         <button style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer' }} title="Profile">
-          <img src="/reddit-logo.png" alt="Profile" style={{ width: 32, height: 32, borderRadius: '50%', border: '2px solid #eee', background: '#fff' }} />
+          <img src="/avaterprofile.png" alt="Profile" style={{ width: 32, height: 32, borderRadius: '50%', border: '2px solid #eee', background: '#fff' }} />
         </button>
       </div>
     </div>

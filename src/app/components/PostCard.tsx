@@ -1,159 +1,239 @@
-"use client";
+'use client';
 
 import React, { useState } from 'react';
+import Link from 'next/link';
+import Image from 'next/image';
+import { RiArrowUpLine, RiArrowDownLine, RiChat3Line, RiShareLine, RiBookmarkLine, RiMoreFill } from '@remixicon/react';
 
-type PostCardProps = {
+interface PostCardProps {
+  id: string;
   image: string;
   title: string;
   subreddit: string;
   description: string;
+  author: string;
+  timestamp: string;
+  upvotes: number;
+  downvotes: number;
+  comments: number;
   subredditIcon?: string;
-  datePosted?: string;
-};
+}
 
 const PostCard = ({
+  id,
   image,
   title,
   subreddit,
   description,
-  subredditIcon = "/reddit-logo.png",
-  datePosted = "2 days ago",
+  author,
+  timestamp,
+  upvotes,
+  downvotes,
+  comments,
+  subredditIcon = '/reddit-logo.png', // Default icon
 }: PostCardProps) => {
-  const [votes, setVotes] = useState(0);
-  const [userVote, setUserVote] = useState(0); // 1 for up, -1 for down, 0 for none
-  const [comments, setComments] = useState(0);
-  const [commentInput, setCommentInput] = useState("");
+  const [userVote, setUserVote] = useState<'up' | 'down' | null>(null);
+  const [currentUpvotes, setCurrentUpvotes] = useState(upvotes);
+  const [currentDownvotes, setCurrentDownvotes] = useState(downvotes);
+  const [currentCommentsCount, setCurrentCommentsCount] = useState(comments);
+  const [commentInput, setCommentInput] = useState('');
   const [commentList, setCommentList] = useState<string[]>([]);
 
-  const handleUpvote = () => {
-    if (userVote === 1) {
-      setVotes(votes - 1);
-      setUserVote(0);
-    } else if (userVote === -1) {
-      setVotes(votes + 2);
-      setUserVote(1);
+  const handleVote = (type: 'up' | 'down') => {
+    if (userVote === type) {
+      setUserVote(null);
+      if (type === 'up') {
+        setCurrentUpvotes(prev => prev - 1);
+      } else {
+        setCurrentDownvotes(prev => prev - 1);
+      }
     } else {
-      setVotes(votes + 1);
-      setUserVote(1);
-    }
-  };
-
-  const handleDownvote = () => {
-    if (userVote === -1) {
-      setVotes(votes + 1);
-      setUserVote(0);
-    } else if (userVote === 1) {
-      setVotes(votes - 2);
-      setUserVote(-1);
-    } else {
-      setVotes(votes - 1);
-      setUserVote(-1);
+      if (userVote) {
+        if (userVote === 'up') {
+          setCurrentUpvotes(prev => prev - 1);
+        } else {
+          setCurrentDownvotes(prev => prev - 1);
+        }
+      }
+      setUserVote(type);
+      if (type === 'up') {
+        setCurrentUpvotes(prev => prev + 1);
+      } else {
+        setCurrentDownvotes(prev => prev + 1);
+      }
     }
   };
 
   const handleComment = () => {
-    if (commentInput.trim() !== "") {
+    if (commentInput.trim() !== '') {
       setCommentList([...commentList, commentInput]);
-      setComments(comments + 1);
-      setCommentInput("");
+      setCurrentCommentsCount(prev => prev + 1);
+      setCommentInput('');
     }
   };
 
   const handleShare = () => {
     if (navigator.clipboard) {
-      navigator.clipboard.writeText(window.location.href);
-      alert("Post link copied to clipboard!");
+      // Construct the full URL for the post
+      navigator.clipboard.writeText(`${window.location.origin}/post/${id}`);
+      alert('Post link copied to clipboard!');
     } else {
-      alert("Clipboard not supported");
+      // Fallback for browsers that don't support clipboard API
+      prompt('Copy this link:', `${window.location.origin}/post/${id}`);
     }
   };
 
+  const totalScore = currentUpvotes - currentDownvotes;
+
   return (
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        background: '#f6f7f8',
-        borderRadius: 12,
-        boxShadow: '0 1px 4px rgba(0,0,0,0.04)',
-        overflow: 'hidden',
-        minWidth: 0,
-      }}
-    >
+    // Added 'w-full' to ensure the card takes full width of its parent container.
+    // This is crucial for proper display within flex or grid layouts.
+    <div className="flex flex-col bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden min-w-0 w-full">
       {/* Card Header */}
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '16px 20px 0 20px' }}>
-        {/* Left: Subreddit icon, name, date, Popular */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          <img src={subredditIcon} alt="Subreddit Icon" style={{ width: 24, height: 24, borderRadius: '50%', marginRight: 6, background: '#fff' }} />
-          <span style={{ color: '#222', fontWeight: 700, fontSize: 15, marginRight: 4 }}>{subreddit}</span>
-          <span style={{ color: '#888', fontSize: 13, marginRight: 4 }}>&#8226; {datePosted}</span>
-          <span style={{ color: '#888', fontSize: 13, marginRight: 4 }}>&#8226; Popular on Reddit right now</span>
+      <div className="flex items-center justify-between p-4 pb-0">
+        <div className="flex items-center space-x-2 text-sm text-gray-500">
+          {/* Link to subreddit page */}
+          <Link href={`/r/${subreddit}`} className="flex items-center">
+            <Image
+              src={subredditIcon}
+              alt="Subreddit Icon"
+              width={24}
+              height={24}
+              className="rounded-full mr-2 bg-white" // Ensures icon background is white
+            />
+            <span className="font-semibold text-gray-800 hover:underline">r/{subreddit}</span>
+          </Link>
+          <span className="mx-1">•</span>
+          <span>Posted by</span>
+          {/* Link to author's profile page */}
+          <Link href={`/u/${author}`} className="ml-1 hover:underline">
+            u/{author}
+          </Link>
+          <span className="mx-1">•</span>
+          <span>{timestamp}</span>
         </div>
-        {/* Right: Join, 3-dot */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          <button style={{ background: '#0079d3', color: '#fff', border: 'none', borderRadius: 16, padding: '4px 16px', fontSize: 14, fontWeight: 600, marginRight: 2 }}>Join</button>
-          <button style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: 22, color: '#888', padding: 0, marginLeft: 2 }} title="More options">&#8942;</button>
+        <div className="flex items-center space-x-2">
+          <button className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-1 px-4 rounded-full text-sm transition-colors duration-200">
+            Join
+          </button>
+          <button className="p-1 rounded-full hover:bg-gray-100 text-gray-500 hover:text-gray-700 transition-colors duration-200" title="More options">
+            <RiMoreFill size={20} />
+          </button>
         </div>
       </div>
-      {/* Title */}
-      <div style={{ fontWeight: 700, fontSize: 20, margin: '12px 20px 0 20px', color: '#222', lineHeight: 1.25 }}>
-        {title}
-      </div>
-      {/* Card Image */}
-      <div style={{ width: '100%', height: 240, overflow: 'hidden', background: '#ddd', marginTop: 12, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-        <img
-          src={image}
-          alt={title}
-          style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
-        />
-      </div>
-      {/* Card Content/Description */}
-      <div style={{ padding: '16px 20px', color: '#444', fontSize: 15 }}>
+
+      {/* Post Title - linked to the detail page */}
+      <Link href={`/post/${id}`} className="block">
+        <h2 className="font-bold text-xl leading-tight mt-3 mx-4 text-gray-900 hover:text-blue-600">
+          {title}
+        </h2>
+      </Link>
+
+      {/* Card Image (conditionally rendered) */}
+      {image && (
+        <div className="w-full h-60 overflow-hidden bg-gray-100 mt-3 flex justify-center items-center">
+          <Image
+            src={image}
+            alt={title}
+            width={800} // Optimized width for the image
+            height={400} // Optimized height for the image
+            className="w-full h-full object-cover" // Ensures image covers the container
+            priority // Prioritize loading for initial view
+          />
+        </div>
+      )}
+
+      {/* Post Description/Content */}
+      <div className="px-4 py-4 text-gray-700 text-base leading-relaxed">
         {description}
       </div>
-      {/* Upvote/Downvote/Comment/Share Bar */}
-      <div style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'flex-start',
-        gap: 24,
-        padding: '12px 20px',
-        borderTop: '1px solid #eee',
-        background: '#fff',
-      }}>
-        <button onClick={handleUpvote} style={{ background: 'none', border: 'none', color: userVote === 1 ? '#ff4500' : '#888', fontSize: 22, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 4 }} title="Upvote">
-          ↑
+
+      {/* Upvote/Downvote/Comment/Share/Save Bar */}
+      <div className="flex items-center justify-start space-x-6 px-4 py-3 border-t border-gray-100 bg-gray-50 text-sm text-gray-500">
+        <div className="flex items-center space-x-1">
+          {/* Upvote Button */}
+          <button
+            onClick={() => handleVote('up')}
+            className={`p-1 rounded-full hover:bg-gray-200 ${
+              userVote === 'up' ? 'text-orange-500' : 'text-gray-400'
+            } transition-colors duration-200`}
+            title="Upvote"
+          >
+            <RiArrowUpLine size={24} />
+          </button>
+          {/* Vote Score */}
+          <span
+            className={`font-semibold text-base ${
+              totalScore === 0 ? 'text-gray-700' : totalScore > 0 ? 'text-orange-500' : 'text-blue-500'
+            }`}
+          >
+            {totalScore}
+          </span>
+          {/* Downvote Button */}
+          <button
+            onClick={() => handleVote('down')}
+            className={`p-1 rounded-full hover:bg-gray-200 ${
+              userVote === 'down' ? 'text-blue-500' : 'text-gray-400'
+            } transition-colors duration-200`}
+            title="Downvote"
+          >
+            <RiArrowDownLine size={24} />
+          </button>
+        </div>
+
+        {/* Comments Button */}
+        <button className="flex items-center space-x-2 p-1 rounded-full hover:bg-gray-100 hover:text-gray-700 transition-colors duration-200" title="Comments">
+          <RiChat3Line size={20} />
+          <span>{currentCommentsCount} Comments</span>
         </button>
-        <span style={{ fontWeight: 600, fontSize: 16, minWidth: 24, textAlign: 'center', color: votes === 0 ? '#888' : votes > 0 ? '#ff4500' : '#0079d3' }}>{votes}</span>
-        <button onClick={handleDownvote} style={{ background: 'none', border: 'none', color: userVote === -1 ? '#0079d3' : '#888', fontSize: 22, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 4 }} title="Downvote">
-          ↓
+
+        {/* Share Button */}
+        <button
+          onClick={handleShare}
+          className="flex items-center space-x-2 p-1 rounded-full hover:bg-gray-100 hover:text-gray-700 transition-colors duration-200"
+          title="Share"
+        >
+          <RiShareLine size={20} />
+          <span>Share</span>
         </button>
-        <button style={{ background: 'none', border: 'none', color: '#888', fontSize: 20, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 4 }} title="Comment">
-          💬 <span style={{ fontSize: 15 }}>{comments}</span>
-        </button>
-        <button onClick={handleShare} style={{ background: 'none', border: 'none', color: '#888', fontSize: 20, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 4 }} title="Share">
-          🔗
+
+        {/* Save Button */}
+        <button className="flex items-center space-x-2 p-1 rounded-full hover:bg-gray-100 hover:text-gray-700 transition-colors duration-200" title="Save">
+          <RiBookmarkLine size={20} />
+          <span>Save</span>
         </button>
       </div>
-      {/* Comment Input */}
-      <div style={{ padding: '12px 20px', background: '#fff', borderTop: '1px solid #eee' }}>
-        <input
-          type="text"
-          placeholder="Write a comment..."
-          value={commentInput}
-          onChange={e => setCommentInput(e.target.value)}
-          style={{ width: '80%', padding: 8, borderRadius: 6, border: '1px solid #ccc', marginRight: 8 }}
-        />
-        <button onClick={handleComment} style={{ background: '#ff4500', color: '#fff', border: 'none', borderRadius: 6, padding: '8px 16px', fontWeight: 600, fontSize: 15 }}>
-          Post
-        </button>
+
+      {/* Comment Input Section */}
+      <div className="p-4 bg-white border-t border-gray-100">
+        <div className="flex items-center space-x-2">
+          <input
+            type="text"
+            placeholder="Write a comment..."
+            value={commentInput}
+            onChange={e => setCommentInput(e.target.value)}
+            className="flex-1 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+          />
+          <button
+            onClick={handleComment}
+            className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-md transition-colors duration-200"
+          >
+            Post
+          </button>
+        </div>
       </div>
-      {/* Display Comments */}
+
+      {/* Display Submitted Comments */}
       {commentList.length > 0 && (
-        <div style={{ padding: '12px 20px', background: '#f6f7f8', borderTop: '1px solid #eee' }}>
-          <div style={{ fontWeight: 600, marginBottom: 8 }}>Comments:</div>
-          {commentList.map((c, i) => (
-            <div key={i} style={{ marginBottom: 6, color: '#333', fontSize: 15, background: '#fff', borderRadius: 6, padding: 8 }}>{c}</div>
+        <div className="px-4 py-3 bg-gray-50 border-t border-gray-100">
+          <p className="font-semibold mb-2 text-gray-700">Comments:</p>
+          {commentList.map((comment, index) => (
+            <div
+              key={index}
+              className="mb-2 p-3 bg-white rounded-md text-gray-800 text-sm shadow-sm border border-gray-200"
+            >
+              {comment}
+            </div>
           ))}
         </div>
       )}
@@ -161,4 +241,4 @@ const PostCard = ({
   );
 };
 
-export default PostCard; 
+export default PostCard;

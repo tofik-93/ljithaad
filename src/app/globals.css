@@ -106,3 +106,21 @@ html, body {
   top: 0;
   z-index: 10;
 }
+
+@media (max-width: 900px) {
+  .sidebar {
+    display: none;
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100vh;
+    z-index: 1000;
+    box-shadow: 2px 0 8px rgba(0,0,0,0.08);
+    transition: transform 0.3s ease;
+  }
+  .sidebar.sidebar--open {
+    display: block;
+    background: #fff;
+    transform: translateX(0);
+  }
+}

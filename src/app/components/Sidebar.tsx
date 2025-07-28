@@ -1,7 +1,17 @@
-"use client";
+'use client';
 
 import React, { useState } from "react";
+import { useRouter } from 'next/navigation'; // Correct import for useRouter in App Router
+import HomeIcon from '@mui/icons-material/Home';
 import SearchIcon from '@mui/icons-material/Search';
+import QuestionAnswerIcon from '@mui/icons-material/QuestionAnswer';
+import ExploreIcon from '@mui/icons-material/Explore';
+import AddIcon from '@mui/icons-material/Add';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
+import MenuOpenIcon from '@mui/icons-material/MenuOpen';
+import MenuIcon from '@mui/icons-material/Menu';
+
 
 const Sidebar = () => {
   const [activeNav, setActiveNav] = useState("Home");
@@ -10,152 +20,282 @@ const Sidebar = () => {
   const [technologyOpen, setTechnologyOpen] = useState(false);
   const [qasOpen, setQasOpen] = useState(false);
   const [popCultureOpen, setPopCultureOpen] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(false);
+
+  const router = useRouter();
 
   const navItems = [
-    { label: "Home", icon: "🏠", color: '#888' },
-    { label: "Popular", icon: <SearchIcon style={{ fontSize: 20, color: '#888' }} /> },
-    { label: "Answers", icon: "💬", color: '#888' },
+    { label: "Home", icon: HomeIcon, path: '/' }, // Add paths for easier navigation
+    { label: "Popular", icon: SearchIcon, path: '/popular' },
+    { label: "Answers", icon: QuestionAnswerIcon, path: '/answers' }, // <--- Added path
+    { label: "Explore", icon: ExploreIcon, path: '/explore' },
+    {
+      label: "All",
+      icon: ({ active }: { active: boolean }) => ( // Explicitly type 'active' for clarity
+        <img
+          src="/allicone.png" // Ensure this image exists in your /public folder
+          alt="All"
+          className={`w-[18px] h-[18px] inline-block align-middle transition-all duration-200
+            ${active ? 'filter brightness-[0.2] scale-110' : 'filter invert-[54%] brightness-[100%]'}
+          `}
+        />
+      ),
+      path: '/all' // Example path
+    },
   ];
 
   return (
-    <aside className="sidebar" style={{ padding: 0 }}>
+    <aside className={`
+      bg-white py-4
+      transition-all duration-300 ease-in-out
+      ${isCollapsed ? 'w-16' : 'w-full lg:w-80'}
+      ${isCollapsed ? 'hidden lg:block' : 'block'}
+    `}>
       <nav>
-        <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
-          {/* Home/Popular/Answers */}
-          {navItems.map((item) => (
-            <li
-              key={item.label}
-              onClick={() => setActiveNav(item.label)}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                padding: '12px 24px',
-                fontWeight: 500,
-                background: activeNav === item.label ? '#ff4500' : (item.label === 'Home' ? '' : item.label === 'Popular' ? '' : 'transparent'),
-                borderRadius: 8,
-                margin: '8px 8px 0 8px',
-                // color:  '#878a8c',
-                fontSize: 15,
-                cursor: 'pointer',
-                transition: 'background 0.2s, color 0.2s',
-              }}
-            >
-              <span style={{ fontSize: 20, marginRight: 16 }}>
-                {typeof item.icon === "string" ? item.icon : item.icon}
-              </span> {item.label}
-              {item.label === 'Answers' && (
-                <span style={{ color: activeNav === 'Answers' ? '#888' : '#ff4500', fontSize: 10, marginLeft: 4 }}>BETA</span>
+        <ul className="list-none p-0 m-0">
+          <li
+            className={`
+              flex items-center px-2 py-3 cursor-pointer mb-4
+              ${isCollapsed ? 'justify-center' : 'justify-end pr-4'}
+              hover:bg-gray-100 rounded-lg mx-2
+            `}
+            onClick={() => setIsCollapsed(!isCollapsed)}
+          >
+            {isCollapsed ? (
+              <MenuIcon fontSize="small" className="text-gray-600" />
+            ) : (
+              <MenuOpenIcon fontSize="small" className="text-gray-600" />
+            )}
+          </li>
+
+          {/* Main Navigation Items */}
+          {navItems.map((item) => {
+            const isActive = activeNav === item.label; // You might want to compare with router.pathname instead
+            const IconComponent = item.icon;
+
+            return (
+              <li
+                key={item.label}
+                onClick={() => {
+                  setActiveNav(item.label); // Update active state visually
+                  if (item.path) { // If a path is defined, navigate
+                    router.push(item.path);
+                  }
+                }}
+                className={`
+                  flex items-center py-3 font-medium text-sm
+                  rounded-lg cursor-pointer transition-all duration-200
+                  mx-2 my-1
+                  ${isCollapsed ? 'justify-center px-0' : 'px-6'}
+                  ${isActive // Consider `router.pathname === item.path` for active state
+                    ? 'bg-gray-200 text-gray-900'
+                    : 'bg-transparent text-gray-600 hover:bg-gray-100'
+                  }
+                `}
+              >
+                <span className={`text-xl mr-4 ${isCollapsed ? 'mr-0' : ''} ${isActive ? 'text-gray-900' : 'text-gray-600'}`}>
+                  {typeof IconComponent === "function"
+                    ? IconComponent({ active: isActive })
+                    : <IconComponent className="text-current" fontSize="small" />
+                  }
+                </span>
+                {!isCollapsed && (
+                  <>
+                    {item.label}
+                    {item.label === 'Answers' && (
+                      <span className={`text-[10px] ml-1 font-bold ${isActive ? 'text-gray-500' : 'text-orange-500'}`}>BETA</span>
+                    )}
+                  </>
+                )}
+              </li>
+            );
+          })}
+
+          {/* Divider */}
+          <hr className="border-t border-gray-200 my-4 mx-4" />
+
+          {/* CUSTOMER FEEDBACK Section */}
+          {!isCollapsed && (
+            <li className="px-6 text-gray-500 font-normal text-xs mb-1 uppercase">
+              Customer Feedback
+            </li>
+          )}
+          <li className={`
+            flex items-center py-2 text-gray-600 text-sm cursor-pointer hover:bg-gray-100 rounded-lg mx-2
+            ${isCollapsed ? 'justify-center px-0' : 'px-6'}
+          `}>
+            <span className={`text-xl ${isCollapsed ? 'mr-0' : 'mr-4'} text-gray-600`}>
+              <AddIcon fontSize="small" />
+            </span>
+            {!isCollapsed && 'Create a custom feed'}
+          </li>
+
+          {/* Divider */}
+          <hr className="border-t border-gray-200 my-4 mx-4" />
+
+          {/* Topics Section */}
+          {!isCollapsed && (
+            <li className="px-6 text-gray-500 font-bold text-xs mb-1 flex items-center justify-between uppercase">
+              Topics
+            </li>
+          )}
+          <ul className="list-none pl-6 mb-2">
+            {/* Internet Culture (Viral) */}
+            <li className={`
+              flex items-center py-2 cursor-pointer text-sm text-gray-700 hover:bg-gray-100 rounded-lg pr-4
+              ${isCollapsed ? 'justify-center pl-0' : 'pl-0'}
+            `} onClick={() => setInternetCultureOpen((v) => !v)}>
+              <span className={`text-xl ${isCollapsed ? 'mr-0' : 'mr-3'}`}>😃</span>
+              {!isCollapsed && 'Internet Culture (Viral)'}
+              {!isCollapsed && (
+                <span className="ml-auto text-sm text-gray-400">
+                  {internetCultureOpen ? <KeyboardArrowDownIcon fontSize="small" /> : <KeyboardArrowRightIcon fontSize="small" />}
+                </span>
               )}
             </li>
-          ))}
-          {/* Divider */}
-          <hr style={{ border: 'none', borderTop: '1px solid #eee', margin: '16px 0' }} />
-          {/* Recent */}
-          <li style={{ padding: '0 24px', color: '#888', fontWeight: 700, fontSize: 13, marginBottom: 4 }}>RECENT</li>
-          <li style={{ display: 'flex', alignItems: 'center', padding: '8px 24px', fontWeight: 500, color: '#878a8c', fontSize: 15 }}>
-            <span style={{ fontSize: 20, marginRight: 16 }}>🖤</span> r/dndnext
-          </li>
-          {/* Divider */}
-          <hr style={{ border: 'none', borderTop: '1px solid #eee', margin: '16px 0' }} />
-          {/* Topics (collapsible) */}
-          <li style={{ padding: '0 24px', color: '#888', fontWeight: 700, fontSize: 13, marginBottom: 4, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            TOPICS <span style={{ fontSize: 16 }}>▼</span>
-          </li>
-          <ul style={{ listStyle: 'none', paddingLeft: 24, marginBottom: 8 }}>
-            {/* Internet Culture (Viral) */}
-            <li style={{ display: 'flex', alignItems: 'center', padding: '8px 0', cursor: 'pointer' }} onClick={() => setInternetCultureOpen((v) => !v)}>
-              <span style={{ fontSize: 20, marginRight: 12 }}>😃</span> Internet Culture (Viral)
-              <span style={{ marginLeft: 'auto', fontSize: 14, fontWeight: 400 }}>{internetCultureOpen ? '▼' : '▶'}</span>
-            </li>
-            {internetCultureOpen && (
-              <ul style={{ listStyle: 'none', paddingLeft: 32, margin: '4px 0 0 0' }}>
-                <li style={{ padding: '4px 0', color: '#878a8c', fontSize: 15 }}>Amazing</li>
-                <li style={{ padding: '4px 0', color: '#878a8c', fontSize: 15 }}>Animal & Pets</li>
-                <li style={{ padding: '4px 0', color: '#878a8c', fontSize: 15 }}>Cringe & Facepalm</li>
-                <li style={{ padding: '4px 0', color: '#878a8c', fontSize: 15 }}>Funny</li>
-                <li style={{ padding: '4px 0', color: '#878a8c', fontSize: 15 }}>Interesting</li>
-                <li style={{ padding: '4px 0', color: '#878a8c', fontSize: 15 }}>Memes</li>
-                <li style={{ padding: '4px 0', color: '#878a8c', fontSize: 15 }}>Oddly Satisfying</li>
-                <li style={{ padding: '4px 0', color: '#878a8c', fontSize: 15 }}>Reddit Meta</li>
-                <li style={{ padding: '4px 0', color: '#878a8c', fontSize: 15 }}>Wholesome & Heartwarming</li>
+            {internetCultureOpen && !isCollapsed && (
+              <ul className="list-none pl-8 mt-1 mb-2">
+                <li className="py-1 text-gray-600 text-sm hover:bg-gray-100 rounded-lg pl-2 cursor-pointer">Amazing</li>
+                <li className="py-1 text-gray-600 text-sm hover:bg-gray-100 rounded-lg pl-2 cursor-pointer">Animal & Pets</li>
+                <li className="py-1 text-gray-600 text-sm hover:bg-gray-100 rounded-lg pl-2 cursor-pointer">Cringe & Facepalm</li>
+                <li className="py-1 text-gray-600 text-sm hover:bg-gray-100 rounded-lg pl-2 cursor-pointer">Funny</li>
+                <li className="py-1 text-gray-600 text-sm hover:bg-gray-100 rounded-lg pl-2 cursor-pointer">Interesting</li>
+                <li className="py-1 text-gray-600 text-sm hover:bg-gray-100 rounded-lg pl-2 cursor-pointer">Memes</li>
+                <li className="py-1 text-gray-600 text-sm hover:bg-gray-100 rounded-lg pl-2 cursor-pointer">Oddly Satisfying</li>
+                <li className="py-1 text-gray-600 text-sm hover:bg-gray-100 rounded-lg pl-2 cursor-pointer">Reddit Meta</li>
+                <li className="py-1 text-gray-600 text-sm hover:bg-gray-100 rounded-lg pl-2 cursor-pointer">Wholesome & Heartwarming</li>
               </ul>
             )}
+
             {/* Games */}
-            <li style={{ display: 'flex', alignItems: 'center', padding: '8px 0', cursor: 'pointer' }} onClick={() => setGamesOpen((v) => !v)}>
-              <span style={{ fontSize: 20, marginRight: 12 }}>🎮</span> Games
-              <span style={{ marginLeft: 'auto', fontSize: 14, fontWeight: 400 }}>{gamesOpen ? '▼' : '▶'}</span>
+            <li className={`
+              flex items-center py-2 cursor-pointer text-sm text-gray-700 hover:bg-gray-100 rounded-lg pr-4
+              ${isCollapsed ? 'justify-center pl-0' : 'pl-0'}
+            `} onClick={() => setGamesOpen((v) => !v)}>
+              <span className={`text-xl ${isCollapsed ? 'mr-0' : 'mr-3'}`}>🎮</span>
+              {!isCollapsed && 'Games'}
+              {!isCollapsed && (
+                <span className="ml-auto text-sm text-gray-400">
+                  {gamesOpen ? <KeyboardArrowDownIcon fontSize="small" /> : <KeyboardArrowRightIcon fontSize="small" />}
+                </span>
+              )}
             </li>
-            {gamesOpen && (
-              <ul style={{ listStyle: 'none', paddingLeft: 32, margin: '4px 0 0 0' }}>
-                <li style={{ padding: '4px 0', color: '#878a8c', fontSize: 15 }}>Action</li>
-                <li style={{ padding: '4px 0', color: '#878a8c', fontSize: 15 }}>Adventure</li>
-                <li style={{ padding: '4px 0', color: '#878a8c', fontSize: 15 }}>RPG</li>
-                <li style={{ padding: '4px 0', color: '#878a8c', fontSize: 15 }}>Shooter</li>
-                <li style={{ padding: '4px 0', color: '#878a8c', fontSize: 15 }}>Sports</li>
-                <li style={{ padding: '4px 0', color: '#878a8c', fontSize: 15 }}>Strategy</li>
-                <li style={{ padding: '4px 0', color: '#878a8c', fontSize: 15 }}>Simulation</li>
-                <li style={{ padding: '4px 0', color: '#878a8c', fontSize: 15 }}>Puzzle</li>
-                <li style={{ padding: '4px 0', color: '#878a8c', fontSize: 15 }}>Racing</li>
-                <li style={{ padding: '4px 0', color: '#878a8c', fontSize: 15 }}>Indie</li>
+            {gamesOpen && !isCollapsed && (
+              <ul className="list-none pl-8 mt-1 mb-2">
+                <li className="py-1 text-gray-600 text-sm hover:bg-gray-100 rounded-lg pl-2 cursor-pointer">Action</li>
+                <li className="py-1 text-gray-600 text-sm hover:bg-gray-100 rounded-lg pl-2 cursor-pointer">Adventure</li>
+                <li className="py-1 text-gray-600 text-sm hover:bg-gray-100 rounded-lg pl-2 cursor-pointer">RPG</li>
+                <li className="py-1 text-gray-600 text-sm hover:bg-gray-100 rounded-lg pl-2 cursor-pointer">Shooter</li>
+                <li className="py-1 text-gray-600 text-sm hover:bg-gray-100 rounded-lg pl-2 cursor-pointer">Sports</li>
+                <li className="py-1 text-gray-600 text-sm hover:bg-gray-100 rounded-lg pl-2 cursor-pointer">Strategy</li>
+                <li className="py-1 text-gray-600 text-sm hover:bg-gray-100 rounded-lg pl-2 cursor-pointer">Simulation</li>
+                <li className="py-1 text-gray-600 text-sm hover:bg-gray-100 rounded-lg pl-2 cursor-pointer">Puzzle</li>
+                <li className="py-1 text-gray-600 text-sm hover:bg-gray-100 rounded-lg pl-2 cursor-pointer">Racing</li>
+                <li className="py-1 text-gray-600 text-sm hover:bg-gray-100 rounded-lg pl-2 cursor-pointer">Indie</li>
               </ul>
             )}
+
             {/* Q&As */}
-            <li style={{ display: 'flex', alignItems: 'center', padding: '8px 0', cursor: 'pointer' }} onClick={() => setQasOpen((v) => !v)}>
-              <span style={{ fontSize: 20, marginRight: 12 }}>❓</span> Q&As
-              <span style={{ marginLeft: 'auto', fontSize: 14, fontWeight: 400 }}>{qasOpen ? '▼' : '▶'}</span>
+            <li className={`
+              flex items-center py-2 cursor-pointer text-sm text-gray-700 hover:bg-gray-100 rounded-lg pr-4
+              ${isCollapsed ? 'justify-center pl-0' : 'pl-0'}
+            `} onClick={() => setQasOpen((v) => !v)}>
+              <span className={`text-xl ${isCollapsed ? 'mr-0' : 'mr-3'}`}>❓</span>
+              {!isCollapsed && 'Q&As'}
+              {!isCollapsed && (
+                <span className="ml-auto text-sm text-gray-400">
+                  {qasOpen ? <KeyboardArrowDownIcon fontSize="small" /> : <KeyboardArrowRightIcon fontSize="small" />}
+                </span>
+              )}
             </li>
-            {qasOpen && (
-              <ul style={{ listStyle: 'none', paddingLeft: 32, margin: '4px 0 0 0' }}>
-                <li style={{ padding: '4px 0', color: '#878a8c', fontSize: 15 }}>AskReddit</li>
-                <li style={{ padding: '4px 0', color: '#878a8c', fontSize: 15 }}>NoStupidQuestions</li>
-                <li style={{ padding: '4px 0', color: '#878a8c', fontSize: 15 }}>ExplainLikeImFive</li>
-                <li style={{ padding: '4px 0', color: '#878a8c', fontSize: 15 }}>TooAfraidToAsk</li>
-                <li style={{ padding: '4px 0', color: '#878a8c', fontSize: 15 }}>OutOfTheLoop</li>
+            {qasOpen && !isCollapsed && (
+              <ul className="list-none pl-8 mt-1 mb-2">
+                <li className="py-1 text-gray-600 text-sm hover:bg-gray-100 rounded-lg pl-2 cursor-pointer">AskReddit</li>
+                <li className="py-1 text-gray-600 text-sm hover:bg-gray-100 rounded-lg pl-2 cursor-pointer">NoStupidQuestions</li>
+                <li className="py-1 text-gray-600 text-sm hover:bg-gray-100 rounded-lg pl-2 cursor-pointer">ExplainLikeImFive</li>
+                <li className="py-1 text-gray-600 text-sm hover:bg-gray-100 rounded-lg pl-2 cursor-pointer">TooAfraidToAsk</li>
+                <li className="py-1 text-gray-600 text-sm hover:bg-gray-100 rounded-lg pl-2 cursor-pointer">OutOfTheLoop</li>
               </ul>
             )}
+
             {/* Technology */}
-            <li style={{ display: 'flex', alignItems: 'center', padding: '8px 0', cursor: 'pointer' }} onClick={() => setTechnologyOpen((v) => !v)}>
-              <span style={{ fontSize: 20, marginRight: 12 }}>💻</span> Technology
-              <span style={{ marginLeft: 'auto', fontSize: 14, fontWeight: 400 }}>{technologyOpen ? '▼' : '▶'}</span>
+            <li className={`
+              flex items-center py-2 cursor-pointer text-sm text-gray-700 hover:bg-gray-100 rounded-lg pr-4
+              ${isCollapsed ? 'justify-center pl-0' : 'pl-0'}
+            `} onClick={() => setTechnologyOpen((v) => !v)}>
+              <span className={`text-xl ${isCollapsed ? 'mr-0' : 'mr-3'}`}>💻</span>
+              {!isCollapsed && 'Technology'}
+              {!isCollapsed && (
+                <span className="ml-auto text-sm text-gray-400">
+                  {technologyOpen ? <KeyboardArrowDownIcon fontSize="small" /> : <KeyboardArrowRightIcon fontSize="small" />}
+                </span>
+              )}
             </li>
-            {technologyOpen && (
-              <ul style={{ listStyle: 'none', paddingLeft: 32, margin: '4px 0 0 0' }}>
-                <li style={{ padding: '4px 0', color: '#878a8c', fontSize: 15 }}>Gadgets</li>
-                <li style={{ padding: '4px 0', color: '#878a8c', fontSize: 15 }}>Programming</li>
-                <li style={{ padding: '4px 0', color: '#878a8c', fontSize: 15 }}>AI & Machine Learning</li>
-                <li style={{ padding: '4px 0', color: '#878a8c', fontSize: 15 }}>Tech News</li>
-                <li style={{ padding: '4px 0', color: '#878a8c', fontSize: 15 }}>Startups</li>
-                <li style={{ padding: '4px 0', color: '#878a8c', fontSize: 15 }}>Science</li>
+            {technologyOpen && !isCollapsed && (
+              <ul className="list-none pl-8 mt-1 mb-2">
+                <li className="py-1 text-gray-600 text-sm hover:bg-gray-100 rounded-lg pl-2 cursor-pointer">Gadgets</li>
+                <li className="py-1 text-gray-600 text-sm hover:bg-gray-100 rounded-lg pl-2 cursor-pointer">Programming</li>
+                <li className="py-1 text-gray-600 text-sm hover:bg-gray-100 rounded-lg pl-2 cursor-pointer">AI & Machine Learning</li>
+                <li className="py-1 text-gray-600 text-sm hover:bg-gray-100 rounded-lg pl-2 cursor-pointer">Tech News</li>
+                <li className="py-1 text-gray-600 text-sm hover:bg-gray-100 rounded-lg pl-2 cursor-pointer">Startups</li>
+                <li className="py-1 text-gray-600 text-sm hover:bg-gray-100 rounded-lg pl-2 cursor-pointer">Science</li>
               </ul>
             )}
+
             {/* Pop Culture */}
-            <li style={{ display: 'flex', alignItems: 'center', padding: '8px 0', cursor: 'pointer' }} onClick={() => setPopCultureOpen((v) => !v)}>
-              <span style={{ fontSize: 20, marginRight: 12 }}>🎬</span> Pop Culture
-              <span style={{ marginLeft: 'auto', fontSize: 14, fontWeight: 400 }}>{popCultureOpen ? '▼' : '▶'}</span>
+            <li className={`
+              flex items-center py-2 cursor-pointer text-sm text-gray-700 hover:bg-gray-100 rounded-lg pr-4
+              ${isCollapsed ? 'justify-center pl-0' : 'pl-0'}
+            `} onClick={() => setPopCultureOpen((v) => !v)}>
+              <span className={`text-xl ${isCollapsed ? 'mr-0' : 'mr-3'}`}>🎬</span>
+              {!isCollapsed && 'Pop Culture'}
+              {!isCollapsed && (
+                <span className="ml-auto text-sm text-gray-400">
+                  {popCultureOpen ? <KeyboardArrowDownIcon fontSize="small" /> : <KeyboardArrowRightIcon fontSize="small" />}
+                </span>
+              )}
             </li>
-            {popCultureOpen && (
-              <ul style={{ listStyle: 'none', paddingLeft: 32, margin: '4px 0 0 0' }}>
-                <li style={{ padding: '4px 0', color: '#878a8c', fontSize: 15 }}>Movies</li>
-                <li style={{ padding: '4px 0', color: '#878a8c', fontSize: 15 }}>TV Shows</li>
-                <li style={{ padding: '4px 0', color: '#878a8c', fontSize: 15 }}>Music</li>
-                <li style={{ padding: '4px 0', color: '#878a8c', fontSize: 15 }}>Celebrities</li>
-                <li style={{ padding: '4px 0', color: '#878a8c', fontSize: 15 }}>Books</li>
-                <li style={{ padding: '4px 0', color: '#878a8c', fontSize: 15 }}>Comics</li>
-                <li style={{ padding: '4px 0', color: '#878a8c', fontSize: 15 }}>Anime & Manga</li>
+            {popCultureOpen && !isCollapsed && (
+              <ul className="list-none pl-8 mt-1 mb-2">
+                <li className="py-1 text-gray-600 text-sm hover:bg-gray-100 rounded-lg pl-2 cursor-pointer">Movies</li>
+                <li className="py-1 text-gray-600 text-sm hover:bg-gray-100 rounded-lg pl-2 cursor-pointer">TV Shows</li>
+                <li className="py-1 text-gray-600 text-sm hover:bg-gray-100 rounded-lg pl-2 cursor-pointer">Music</li>
+                <li className="py-1 text-gray-600 text-sm hover:bg-gray-100 rounded-lg pl-2 cursor-pointer">Celebrities</li>
+                <li className="py-1 text-gray-600 text-sm hover:bg-gray-100 rounded-lg pl-2 cursor-pointer">Books</li>
+                <li className="py-1 text-gray-600 text-sm hover:bg-gray-100 rounded-lg pl-2 cursor-pointer">Comics</li>
+                <li className="py-1 text-gray-600 text-sm hover:bg-gray-100 rounded-lg pl-2 cursor-pointer">Anime & Manga</li>
               </ul>
             )}
-            {/* Movies & TV */}
-            <li style={{ display: 'flex', alignItems: 'center', padding: '8px 0' }}><span style={{ fontSize: 20, marginRight: 12 }}>📺</span> Movies & TV</li>
-            <li style={{ color: '#0079d3', marginTop: 4, cursor: 'pointer', padding: '8px 0' }}>See more</li>
+            {/* Movies & TV - Not collapsible, always visible icon */}
+            <li className={`
+              flex items-center py-2 text-gray-700 text-sm hover:bg-gray-100 rounded-lg pr-4 cursor-pointer
+              ${isCollapsed ? 'justify-center pl-0' : 'pl-0'}
+            `}>
+              <span className={`text-xl ${isCollapsed ? 'mr-0' : 'mr-3'}`}>📺</span>
+              {!isCollapsed && 'Movies & TV'}
+            </li>
+            {!isCollapsed && (
+              <li className="text-blue-600 mt-1 cursor-pointer py-1 pl-6 hover:underline text-sm">See more</li>
+            )}
           </ul>
+
           {/* Divider */}
-          <hr style={{ border: 'none', borderTop: '1px solid #eee', margin: '16px 0' }} />
-          {/* Resources (collapsible) */}
-          <li style={{ padding: '0 24px', color: '#888', fontWeight: 700, fontSize: 13, marginBottom: 4, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            RESOURCES <span style={{ fontSize: 16 }}>▼</span>
-          </li>
-          <ul style={{ listStyle: 'none', paddingLeft: 24, marginBottom: 8 }}>
-            <li style={{ display: 'flex', alignItems: 'center', padding: '8px 0', color: '#888' }}><span style={{ fontSize: 20, marginRight: 12 }}>ℹ️</span> About Reddit</li>
+          <hr className="border-t border-gray-200 my-4 mx-4" />
+
+          {/* Resources Section */}
+          {!isCollapsed && (
+            <li className="px-6 text-gray-500 font-bold text-xs mb-1 flex items-center justify-between uppercase">
+              Resources
+            </li>
+          )}
+          <ul className="list-none pl-6 mb-2">
+            <li className={`
+              flex items-center py-2 text-gray-700 text-sm hover:bg-gray-100 rounded-lg pr-4 cursor-pointer
+              ${isCollapsed ? 'justify-center pl-0' : 'pl-0'}
+            `}>
+              <span className={`text-xl ${isCollapsed ? 'mr-0' : 'mr-3'}`}>ℹ️</span>
+              {!isCollapsed && 'About Reddit'}
+            </li>
           </ul>
         </ul>
       </nav>
@@ -163,4 +303,4 @@ const Sidebar = () => {
   );
 };
 
-export default Sidebar; 
+export default Sidebar;
