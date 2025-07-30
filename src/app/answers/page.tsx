@@ -2,48 +2,38 @@
 
 import React, { useEffect, useState } from 'react';
 
-// Define your tags array with icons and labels
+// Define your tags array with icons and labels (updated for Islamic content)
 const tags = [
-  { label: 'garmin vs apple watch', icon: '⌚' },
-  { label: 'affordable cookware', icon: '🍳' },
-  { label: 'cameras for beginning photographers', icon: '📷' },
-  { label: 'how to tell if an image is AI generated', icon: '🤖' },
-  { label: 'wooden data centers benefits', icon: '🪵' },
-  { label: 'best hip-hop tracks of all time', icon: '🎤' },
-  { label: 'tips for tinder bios', icon: '💬' },
-  { label: 'best mechanical keyboards', icon: '⌨️' },
-  { label: 'books like 1984', icon: '📖' },
-  { label: 'whitening strip recommendations', icon: '🦷' },
-  { label: 'meatloaf recipe', icon: '👩‍🍳' },
-  { label: 'best underrated pop albums', icon: '🎤' },
-  { label: 'best gaming news subreddits', icon: '🕹️' },
-  { label: 'most effective alarm clocks', icon: '⏰' },
-  { label: 'best netflix thrillers', icon: '🎥' },
-  { label: 'why do some meteor showers happen annually', icon: '☄️' },
-  { label: 'banana bread recipes', icon: '🍞' },
-  { label: 'VR headset recommendations', icon: '🕶️' },
-  { label: 'cheapest streaming service', icon: '📺' },
-  { label: 'go-to karaoke songs', icon: '🎤' },
-  { label: 'best beauty subreddits', icon: '💄' },
-  { label: 'best finance subreddits', icon: '💸' },
-  { label: 'dungeon master tips', icon: '🧙‍♂️' },
-  { label: 'helpful finance podcasts', icon: '💸' },
-  { label: 'saddest one piece moments', icon: '😢' },
-  { label: 'good cartoons for younger kids', icon: '👶' },
-  { label: 'useful notetaking apps', icon: '📝' },
-  { label: 'best xbox games 2024', icon: '🎮' },
-  { label: 'recommendations', icon: '' },
-  { label: '2012 nissan altima rattling when cold', icon: '🚗' },
-  { label: 'best sites for gaming news', icon: '📰' },
-  { label: 'white lotus plot theories', icon: '🌿' },
-  { label: 'best salary part-time jobs', icon: '💰' },
-  { label: 'hypoallergenic cat breeds', icon: '🐱' },
-  { label: 'best site to compare flight prices', icon: '✈️' },
-  { label: 'le cookware', icon: '' },
-  { label: 'tips for new parents', icon: '🍼' },
-  { label: 'best selling sunset drama', icon: '🌇' },
-  { label: 'marathon training tips for beginners', icon: '🏃' },
-  { label: 'best ga', icon: '' },
+  { label: 'Quran recitation tips', icon: '📖' },
+  { label: 'Hadis of the day', icon: '✨' },
+  { label: 'Islamic news updates', icon: '📰' },
+  { label: 'Dua for daily life', icon: '🙏' },
+  { label: 'Halal recipes', icon: '🍲' },
+  { label: 'Islamic history facts', icon: '🕌' },
+  { label: 'Quran translation benefits', icon: '🌍' },
+  { label: 'Ramadan preparation', icon: '🌙' },
+  { label: 'Islamic finance advice', icon: '💸' },
+  { label: 'Hadis on kindness', icon: '❤️' },
+  { label: 'Tafsir insights', icon: '📚' },
+  { label: 'Zakat calculation guide', icon: '💰' },
+  { label: 'Islamic parenting tips', icon: '👪' },
+  { label: 'Hajj preparation tips', icon: '🕋' },
+  { label: 'Islamic art styles', icon: '🎨' },
+  { label: 'Sunnah skincare', icon: '🧴' },
+  { label: 'Quran memorization methods', icon: '🧠' },
+  { label: 'Islamic scholars Q&A', icon: '❓' },
+  { label: 'Eid celebration ideas', icon: '🎉' },
+  { label: 'Halal travel destinations', icon: '✈️' },
+  { label: 'Islamic books recommendations', icon: '📖' },
+  { label: 'Dua for success', icon: '🌟' },
+  { label: 'Hadis on patience', icon: '⏳' },
+  { label: 'Islamic fitness routines', icon: '🏃' },
+  { label: 'Quran reading apps', icon: '📱' },
+  { label: 'Islamic charity ideas', icon: '🤲' },
+  { label: 'Sunnah sleep habits', icon: '😴' },
+  { label: 'Islamic marriage advice', icon: '💞' },
+  { label: 'Halal investment options', icon: '💵' },
+  { label: 'Islamic poetry', icon: '✍️' },
 ];
 
 // Split tags into 4 rows
@@ -56,7 +46,7 @@ const splitIntoRows = (arr: typeof tags, rows: number) => {
 
 const tagRows = splitIntoRows(tags, 4);
 
-const RedditAnswersPage = () => {
+const LijithadAnswersPage = () => {
   const [isVisible, setIsVisible] = useState(false);
 
   // Trigger the animation after component mounts
@@ -68,14 +58,13 @@ const RedditAnswersPage = () => {
     <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
       <div className="bg-white rounded-lg shadow-xl p-6 sm:p-10 w-full max-w-4xl text-center">
         {/* Header */}
-        <h1 className="text-3xl sm:text-4xl font-bold text-orange-600 mb-5 font-sans">
-          reddit answers
+        <h1 className="text-3xl sm:text-4xl font-bold text-green-600 mb-5 font-sans">
+          Lijithad Answers
         </h1>
 
         {/* Tagline */}
         <p className="text-base sm:text-lg text-gray-700 mb-10 max-w-2xl mx-auto leading-relaxed">
-          Got a question? Ask it and get answers, perspectives, and
-          recommendations from all of Reddit
+          Got a question? Ask it and get answers, perspectives, and guidance from the Lijithad community
         </p>
 
         {/* Tags Section with Continuous Right-to-Left Animation */}
@@ -105,12 +94,12 @@ const RedditAnswersPage = () => {
           <a
             href="#" // Replace with actual link
             className={`
-              text-blue-600 hover:underline font-semibold text-sm flex items-center
+              text-green-600 hover:underline font-semibold text-sm flex items-center
               transform transition-transform duration-700 ease-out
               ${isVisible ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'}
             `}
           >
-            Learn how Reddit Answers works
+            Learn how Lijithad Answers works
             <span className="ml-1">→</span>
           </a>
         </div>
@@ -138,4 +127,4 @@ const RedditAnswersPage = () => {
   );
 };
 
-export default RedditAnswersPage;
+export default LijithadAnswersPage;

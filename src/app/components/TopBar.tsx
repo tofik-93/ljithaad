@@ -32,7 +32,7 @@ const TopBar = () => {
             className="w-6 h-6 mr-1"
           />
           <span className="font-bold text-lg text-orange-500 hidden sm:inline">
-            reddit
+            Ljithad
           </span>
         </Link>
 
@@ -42,7 +42,7 @@ const TopBar = () => {
             <SearchIcon className="text-gray-500 text-lg mx-2" />
             <input
               type="text"
-              placeholder="Search Reddit"
+              placeholder="Search ljithad"
               className="p-1 bg-transparent border-none outline-none w-full text-sm"
             />
           </div>

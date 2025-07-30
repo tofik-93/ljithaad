@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'Reddit Clone - Social Media Platform',
+  title: 'ljithiad ',
   description: 'Explore communities, share content, and connect with others on this Reddit-inspired platform.',
 };
 

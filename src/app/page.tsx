@@ -9,7 +9,7 @@ export default function Home() {
     <div className="reddit-layout">
       <TopBar />
       <div className="main-content">
-        <Sidebar />
+     
         <Feed />
         <CommunityList />
       </div>

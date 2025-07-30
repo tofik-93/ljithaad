@@ -1,89 +1,88 @@
-// app/popular/page.tsx
 'use client'; // This component uses client-side interactivity
 
-import { ChevronDown, ExternalLink } from "lucide-react"
+import { ChevronDown, ExternalLink } from 'lucide-react';
 
 interface NewsCard {
-  title: string
-  subtitle: string
-  subreddit: string
-  image: string
-  subredditIcon: string
+  title: string;
+  subtitle: string;
+  category: string; // Changed from subreddit to category
+  image: string;
+  categoryIcon: string; // Changed from subredditIcon
 }
 
 interface Post {
-  id: string
-  subreddit: string
-  username: string
-  timeAgo: string
-  content: string
-  link?: string
-  image?: string
-  subredditIcon: string
+  id: string;
+  category: string; // Changed from subreddit
+  username: string;
+  timeAgo: string;
+  content: string;
+  link?: string;
+  image?: string;
+  categoryIcon: string; // Changed from subredditIcon
 }
 
-// Hardcoded Data (remain the same)
+// Hardcoded Data (updated for Islamic content)
 const newsCards: NewsCard[] = [
   {
-    title: "US and EU strike trade deal",
-    subtitle: "US and EU strike trade deal",
-    subreddit: "r/europe",
-    image: "/image_f2aa00.jpg", // Changed to use your uploaded image
-    subredditIcon: "🇪🇺",
+    title: 'New Fatwa Issued',
+    subtitle: 'Scholars release guidance on modern financial transactions',
+    category: 'Islamic News',
+    image: '/image_f2aa00.jpg', // Changed to use your uploaded image
+    categoryIcon: '📰',
   },
   {
-    title: "Wildfires in Turkey, Greece",
-    subtitle: "'Apocalyptic' Turkey wildfires spread as...",
-    subreddit: "r/europe",
-    image: "/placeholder.svg?height=200&width=400",
-    subredditIcon: "🇪🇺",
+    title: 'Quran Recitation Event',
+    subtitle: 'Global online event to recite Surah Al-Baqarah',
+    category: 'Quran',
+    image: '/placeholder.svg?height=200&width=400',
+    categoryIcon: '📖',
   },
   {
-    title: "Bangkok market shooting",
-    subtitle: "At least 6 killed in Bangkok market after...",
-    subreddit: "r/worldnews",
-    image: "/placeholder.svg?height=200&width=400",
-    subredditIcon: "🌍",
+    title: 'Hadis of the Day',
+    subtitle: 'Reflection on the Prophet’s teachings on charity',
+    category: 'Hadis',
+    image: '/placeholder.svg?height=200&width=400',
+    categoryIcon: '✨',
   },
   {
-    title: "Marcus Morris arrest",
-    subtitle: "Former Suns Player Marcus...",
-    subreddit: "r/suns",
-    image: "/placeholder.svg?height=200&width=400",
-    subredditIcon: "🏀",
+    title: 'Islamic Finance Update',
+    subtitle: 'New developments in Sharia-compliant banking',
+    category: 'Islamic News',
+    image: '/placeholder.svg?height=200&width=400',
+    categoryIcon: '📰',
   },
-]
+];
 
 const posts: Post[] = [
   {
-    id: "1",
-    subreddit: "r/todayilearned",
-    username: "r/todayilearned",
-    timeAgo: "3 hr. ago",
+    id: '1',
+    category: 'Quran',
+    username: 'u/QuranLover',
+    timeAgo: '3 hr. ago',
     content:
-      "TIL Ed Toutant lost at the $16K question on 'Who Wants to Be a Millionaire' because it was a flawed question. Therefore, he was invited back on & given a second chance, with the jackpot set back at $1.86m as it had been on his first appearance. In his return, he sailed to the end & won that jackpot.",
-    link: "https://www.grunge.com/155134/the-biggest-payouts-in-game-show-history/",
-    image: "/placeholder.svg?height=100&width=100",
-    subredditIcon: "📚",
+      'Learned today that Surah Al-Fatiha is called the "Mother of the Quran" due to its comprehensive meaning. Reflect on its verses for daily guidance.',
+    link: 'https://www.islamicinsights.org/quran-surah-al-fatiha/',
+    image: '/placeholder.svg?height=100&width=100',
+    categoryIcon: '📖',
   },
   {
-    id: "2",
-    subreddit: "r/tragedeigh",
-    username: "r/tragedeigh",
-    timeAgo: "4 hr. ago",
-    content: "So, what will be your kid's name?",
-    image: "/placeholder.svg?height=200&width=300",
-    subredditIcon: "👶",
+    id: '2',
+    category: 'Hadis',
+    username: 'u/HadisSeeker',
+    timeAgo: '4 hr. ago',
+    content: 'Which Hadis inspires your daily acts of kindness?',
+    image: '/placeholder.svg?height=200&width=300',
+    categoryIcon: '✨',
   },
-]
+];
 
 const sidebarPost = {
-  subreddit: "r/cyberpunk",
-  username: "r/cyberpunk...",
-  timeAgo: "2 days ago",
-  content: "Which arm cyberware would you use in real life?",
-  image: "/placeholder.svg?height=100&width=100",
-}
+  category: 'Islamic News',
+  username: 'u/IslamicScholar',
+  timeAgo: '2 days ago',
+  content: 'Which Islamic principle guides your financial decisions?',
+  image: '/placeholder.svg?height=100&width=100',
+};
 
 // The main page component
 export default function Component() {
@@ -94,16 +93,21 @@ export default function Component() {
         <div className="max-w-7xl mx-auto px-4 py-4">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             {newsCards.map((card, index) => (
-              // Replaced Shadcn Card with a simple div
-              <div key={index} className="relative overflow-hidden cursor-pointer rounded-lg shadow-md hover:shadow-lg transition-shadow bg-white">
-                <div className="h-48 bg-cover bg-center relative" style={{ backgroundImage: `url(${index === 0 ? '/image_f2aa00.jpg' : card.image})` }}>
+              <div
+                key={index}
+                className="relative overflow-hidden cursor-pointer rounded-lg shadow-md hover:shadow-lg transition-shadow bg-white"
+              >
+                <div
+                  className="h-48 bg-cover bg-center relative"
+                  style={{ backgroundImage: `url(${index === 0 ? '/image_f2aa00.jpg' : card.image})` }}
+                >
                   <div className="absolute inset-0 bg-black bg-opacity-40" />
                   <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
                     <h3 className="font-bold text-lg mb-1">{card.title}</h3>
                     <p className="text-sm opacity-90 mb-2">{card.subtitle}</p>
                     <div className="flex items-center text-xs">
-                      <span className="mr-1">{card.subredditIcon}</span>
-                      <span className="font-medium">{card.subreddit}</span>
+                      <span className="mr-1">{card.categoryIcon}</span>
+                      <span className="font-medium">{card.category}</span>
                       <span className="ml-2 opacity-75">and more</span>
                     </div>
                   </div>
@@ -118,12 +122,11 @@ export default function Component() {
       <div className="max-w-7xl mx-auto px-4 py-6">
         {/* Filter Bar */}
         <div className="flex items-center gap-4 mb-6">
-          {/* Replaced Shadcn Button with a simple button */}
           <button className="flex items-center gap-2 px-4 py-2 rounded-md hover:bg-gray-100 transition-colors text-gray-700">
             Best <ChevronDown className="h-4 w-4" />
           </button>
           <button className="flex items-center gap-2 px-4 py-2 rounded-md hover:bg-gray-100 transition-colors text-gray-700">
-            Everywhere <ChevronDown className="h-4 w-4" />
+            All Categories <ChevronDown className="h-4 w-4" />
           </button>
         </div>
 
@@ -131,21 +134,17 @@ export default function Component() {
           {/* Main Feed */}
           <div className="lg:col-span-3 space-y-4">
             {posts.map((post) => (
-              // Replaced Shadcn Card with a simple div
               <div key={post.id} className="bg-white rounded-lg shadow-md p-6">
-                {/* Replaced Shadcn CardContent with a div */}
                 <div>
                   <div className="flex items-start gap-4">
-                    {/* Replaced Shadcn Avatar with a simple div */}
-                    <div className="h-8 w-8 flex-shrink-0 rounded-full bg-red-500 text-white text-xs flex items-center justify-center">
-                      {post.subredditIcon}
+                    <div className="h-8 w-8 flex-shrink-0 rounded-full bg-green-500 text-white text-xs flex items-center justify-center">
+                      {post.categoryIcon}
                     </div>
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-2">
                         <span className="font-medium text-sm">{post.username}</span>
                         <span className="text-gray-500 text-sm">• {post.timeAgo}</span>
-                        {/* Replaced Shadcn Button with a simple button */}
-                        <button className="ml-auto px-3 py-1 bg-blue-500 text-white text-sm rounded-full hover:bg-blue-600 transition-colors">
+                        <button className="ml-auto px-3 py-1 bg-green-500 text-white text-sm rounded-full hover:bg-green-600 transition-colors">
                           Join
                         </button>
                       </div>
@@ -153,7 +152,7 @@ export default function Component() {
                       {post.link && (
                         <a
                           href={post.link}
-                          className="text-blue-600 hover:underline text-sm flex items-center gap-1"
+                          className="text-green-600 hover:underline text-sm flex items-center gap-1"
                           target="_blank"
                           rel="noopener noreferrer"
                         >
@@ -165,7 +164,7 @@ export default function Component() {
                     {post.image && (
                       <div className="flex-shrink-0">
                         <img
-                          src={post.image || "/placeholder.svg"}
+                          src={post.image || '/placeholder.svg'}
                           alt="Post image"
                           className="w-24 h-24 object-cover rounded-lg"
                         />
@@ -179,13 +178,10 @@ export default function Component() {
 
           {/* Sidebar */}
           <div className="lg:col-span-1">
-            {/* Replaced Shadcn Card with a simple div */}
             <div className="bg-white rounded-lg shadow-md p-4">
-              {/* Replaced Shadcn CardContent with a div */}
               <div>
                 <div className="flex items-start gap-3">
-                  {/* Replaced Shadcn Avatar with a simple div */}
-                  <div className="h-8 w-8 flex-shrink-0 rounded-full bg-purple-500 text-white text-xs flex items-center justify-center">
+                  <div className="h-8 w-8 flex-shrink-0 rounded-full bg-blue-500 text-white text-xs flex items-center justify-center">
                     🤖
                   </div>
                   <div className="flex-1">
@@ -197,7 +193,7 @@ export default function Component() {
                   </div>
                   <div className="flex-shrink-0">
                     <img
-                      src={sidebarPost.image || "/placeholder.svg"}
+                      src={sidebarPost.image || '/placeholder.svg'}
                       alt="Sidebar post"
                       className="w-16 h-16 object-cover rounded"
                     />
@@ -209,5 +205,5 @@ export default function Component() {
         </div>
       </div>
     </div>
-  )
+  );
 }
