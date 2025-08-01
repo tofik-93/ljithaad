@@ -74,11 +74,9 @@ const PostCard = ({
 
   const handleShare = () => {
     if (navigator.clipboard) {
-      // Construct the full URL for the post
       navigator.clipboard.writeText(`${window.location.origin}/post/${id}`);
       alert('Post link copied to clipboard!');
     } else {
-      // Fallback for browsers that don't support clipboard API
       prompt('Copy this link:', `${window.location.origin}/post/${id}`);
     }
   };
@@ -86,72 +84,67 @@ const PostCard = ({
   const totalScore = currentUpvotes - currentDownvotes;
 
   return (
-    // Added 'w-full' to ensure the card takes full width of its parent container.
-    // This is crucial for proper display within flex or grid layouts.
-    <div className="flex flex-col bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden min-w-0 w-full">
+    <div className="flex flex-col bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden w-full">
       {/* Card Header */}
-      <div className="flex items-center justify-between p-4 pb-0">
-        <div className="flex items-center space-x-2 text-sm text-gray-500">
-          {/* Link to subreddit page */}
+      <div className="flex items-center justify-between p-2 sm:p-4 pb-0">
+        <div className="flex items-center space-x-1 sm:space-x-2 text-xs sm:text-sm text-gray-500">
           <Link href={`/r/${subreddit}`} className="flex items-center">
             <Image
               src={subredditIcon}
               alt="Subreddit Icon"
-              width={24}
-              height={24}
-              className="rounded-full mr-2 bg-white" // Ensures icon background is white
+              width={16}
+              height={16}
+              className="rounded-full mr-1 sm:mr-2 bg-white"
             />
-            <span className="font-semibold text-gray-800 hover:underline">r/{subreddit}</span>
+            <span className="font-semibold text-gray-800 hover:underline line-clamp-1">r/{subreddit}</span>
           </Link>
-          <span className="mx-1">•</span>
+          <span className="mx-0.5 sm:mx-1">•</span>
           <span>Posted by</span>
-          {/* Link to author's profile page */}
-          <Link href={`/u/${author}`} className="ml-1 hover:underline">
+          <Link href={`/u/${author}`} className="ml-0.5 sm:ml-1 hover:underline line-clamp-1">
             u/{author}
           </Link>
-          <span className="mx-1">•</span>
-          <span>{timestamp}</span>
+          <span className="mx-0.5 sm:mx-1">•</span>
+          <span className="line-clamp-1">{timestamp}</span>
         </div>
-        <div className="flex items-center space-x-2">
-          <button className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-1 px-4 rounded-full text-sm transition-colors duration-200">
+        <div className="flex items-center space-x-1 sm:space-x-2">
+          <button className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-1 px-2 sm:px-4 rounded-full text-xs sm:text-sm transition-colors duration-200">
             Join
           </button>
           <button className="p-1 rounded-full hover:bg-gray-100 text-gray-500 hover:text-gray-700 transition-colors duration-200" title="More options">
-            <RiMoreFill size={20} />
+            <RiMoreFill size={16} className="sm:w-5 sm:h-5" />
           </button>
         </div>
       </div>
 
       {/* Post Title - linked to the detail page */}
       <Link href={`/post/${id}`} className="block">
-        <h2 className="font-bold text-xl leading-tight mt-3 mx-4 text-gray-900 hover:text-blue-600">
+        <h2 className="font-bold text-lg sm:text-xl leading-tight mt-2 sm:mt-3 mx-2 sm:mx-4 text-gray-900 hover:text-blue-600 line-clamp-2">
           {title}
         </h2>
       </Link>
 
       {/* Card Image (conditionally rendered) */}
       {image && (
-        <div className="w-full h-60 overflow-hidden bg-gray-100 mt-3 flex justify-center items-center">
+        <div className="w-full h-48 sm:h-64 md:h-96 overflow-hidden bg-gray-100 mt-2 sm:mt-3 flex justify-center items-center">
           <Image
             src={image}
             alt={title}
-            width={800} // Optimized width for the image
-            height={400} // Optimized height for the image
-            className="w-full h-full object-cover" // Ensures image covers the container
-            priority // Prioritize loading for initial view
+            width={800}
+            height={700}
+            className="w-full h-full object-cover"
+            priority
           />
         </div>
       )}
 
       {/* Post Description/Content */}
-      <div className="px-4 py-4 text-gray-700 text-base leading-relaxed">
+      <div className="px-2 sm:px-4 py-2 sm:py-4 text-gray-700 text-sm sm:text-base leading-relaxed line-clamp-3">
         {description}
       </div>
 
       {/* Upvote/Downvote/Comment/Share/Save Bar */}
-      <div className="flex items-center justify-start space-x-6 px-4 py-3 border-t border-gray-100 bg-gray-50 text-sm text-gray-500">
-        <div className="flex items-center space-x-1">
-          {/* Upvote Button */}
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-start space-y-2 sm:space-y-0 sm:space-x-4 px-2 sm:px-4 py-2 sm:py-3 border-t border-gray-100 bg-gray-50 text-xs sm:text-sm text-gray-500">
+        <div className="flex items-center space-x-1 sm:space-x-2">
           <button
             onClick={() => handleVote('up')}
             className={`p-1 rounded-full hover:bg-gray-200 ${
@@ -159,9 +152,8 @@ const PostCard = ({
             } transition-colors duration-200`}
             title="Upvote"
           >
-            <RiArrowUpLine size={24} />
+            <RiArrowUpLine size={16} className="sm:w-6 sm:h-6" />
           </button>
-          {/* Vote Score */}
           <span
             className={`font-semibold text-base ${
               totalScore === 0 ? 'text-gray-700' : totalScore > 0 ? 'text-orange-500' : 'text-blue-500'
@@ -169,7 +161,6 @@ const PostCard = ({
           >
             {totalScore}
           </span>
-          {/* Downvote Button */}
           <button
             onClick={() => handleVote('down')}
             className={`p-1 rounded-full hover:bg-gray-200 ${
@@ -177,46 +168,43 @@ const PostCard = ({
             } transition-colors duration-200`}
             title="Downvote"
           >
-            <RiArrowDownLine size={24} />
+            <RiArrowDownLine size={16} className="sm:w-6 sm:h-6" />
           </button>
         </div>
 
-        {/* Comments Button */}
-        <button className="flex items-center space-x-2 p-1 rounded-full hover:bg-gray-100 hover:text-gray-700 transition-colors duration-200" title="Comments">
-          <RiChat3Line size={20} />
+        <button className="flex items-center space-x-1 sm:space-x-2 p-1 rounded-full hover:bg-gray-100 hover:text-gray-700 transition-colors duration-200" title="Comments">
+          <RiChat3Line size={16} className="sm:w-5 sm:h-5" />
           <span>{currentCommentsCount} Comments</span>
         </button>
 
-        {/* Share Button */}
         <button
           onClick={handleShare}
-          className="flex items-center space-x-2 p-1 rounded-full hover:bg-gray-100 hover:text-gray-700 transition-colors duration-200"
+          className="flex items-center space-x-1 sm:space-x-2 p-1 rounded-full hover:bg-gray-100 hover:text-gray-700 transition-colors duration-200"
           title="Share"
         >
-          <RiShareLine size={20} />
+          <RiShareLine size={16} className="sm:w-5 sm:h-5" />
           <span>Share</span>
         </button>
 
-        {/* Save Button */}
-        <button className="flex items-center space-x-2 p-1 rounded-full hover:bg-gray-100 hover:text-gray-700 transition-colors duration-200" title="Save">
-          <RiBookmarkLine size={20} />
+        <button className="flex items-center space-x-1 sm:space-x-2 p-1 rounded-full hover:bg-gray-100 hover:text-gray-700 transition-colors duration-200" title="Save">
+          <RiBookmarkLine size={16} className="sm:w-5 sm:h-5" />
           <span>Save</span>
         </button>
       </div>
 
       {/* Comment Input Section */}
-      <div className="p-4 bg-white border-t border-gray-100">
-        <div className="flex items-center space-x-2">
+      <div className="p-2 sm:p-4 bg-white border-t border-gray-100">
+        <div className="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-2">
           <input
             type="text"
             placeholder="Write a comment..."
             value={commentInput}
             onChange={e => setCommentInput(e.target.value)}
-            className="flex-1 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+            className="flex-1 p-1 sm:p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 text-sm sm:text-base"
           />
           <button
             onClick={handleComment}
-            className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-md transition-colors duration-200"
+            className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-1 sm:py-2 px-2 sm:px-4 rounded-md transition-colors duration-200 text-xs sm:text-sm"
           >
             Post
           </button>
@@ -225,12 +213,12 @@ const PostCard = ({
 
       {/* Display Submitted Comments */}
       {commentList.length > 0 && (
-        <div className="px-4 py-3 bg-gray-50 border-t border-gray-100">
-          <p className="font-semibold mb-2 text-gray-700">Comments:</p>
+        <div className="px-2 sm:px-4 py-2 sm:py-3 bg-gray-50 border-t border-gray-100">
+          <p className="font-semibold mb-1 sm:mb-2 text-gray-700 text-sm sm:text-base">Comments:</p>
           {commentList.map((comment, index) => (
             <div
               key={index}
-              className="mb-2 p-3 bg-white rounded-md text-gray-800 text-sm shadow-sm border border-gray-200"
+              className="mb-1 sm:mb-2 p-1 sm:p-3 bg-white rounded-md text-gray-800 text-sm sm:text-base shadow-sm border border-gray-200 line-clamp-2"
             >
               {comment}
             </div>

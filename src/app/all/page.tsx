@@ -1,112 +1,37 @@
-'use client';
+'use client'
+import { useState } from 'react';
 
-import React from 'react';
-
-const AllPage = () => {
-  // Mock data adapted for Lijithad Islamic categories
-  const categories = [
-    { label: 'All', icon: '🌐' },
-    { label: 'Islamic News', icon: '📰' },
-    { label: 'Quran', icon: '📖' },
-    { label: 'Hadis', icon: '✨' },
-    { label: 'Dua', icon: '🙏' },
-    { label: 'Halal Living', icon: '🍲' },
-    { label: 'Islamic History', icon: '🕌' },
-    { label: 'Ramadan', icon: '🌙' },
-  ];
-
-  const recommendedCommunities = [
-    { name: 'IslamicScholars', members: '45k members', description: 'Discuss latest fatwas and scholarly insights.', image: '/islamicscholars.jpg' },
-    { name: 'QuranRecitation', members: '120k members', description: 'Learn and share Quran recitation techniques.', image: '/quranrecitation.jpg' },
-    { name: 'HadisDaily', members: '78k members', description: 'Daily Hadis reflections and discussions.', image: '/hadisdaily.jpg' },
-    { name: 'HalalRecipes', members: '90k members', description: 'Share and explore Halal recipes.', image: '/halalrecipes.jpg' },
-    { name: 'DuaCorner', members: '30k members', description: 'Post and learn powerful Duas.', image: '/duacorner.jpg' },
-  ];
-
-  const moreLikeIslamicNews = [
-    { name: 'IslamicEvents', members: '25k members', description: 'Stay updated on Islamic events worldwide.', image: '/islamicevents.jpg' },
-    { name: 'ShariaFinance', members: '15k members', description: 'Discuss Sharia-compliant financial options.', image: '/shariafinance.jpg' },
-    { name: 'MuslimTravel', members: '20k members', description: 'Halal travel tips and destinations.', image: '/muslimtravel.jpg' },
-  ];
-
-  const customFeeds = [
-    { name: 'r/QuranMemorization', image: '/quranmemorization.jpg' },
-    { name: 'r/HadisWisdom', image: '/hadiswisdom.jpg' },
-    { name: 'r/IslamicCharity', image: '/islamiccharity.jpg' },
-    { name: 'r/HalalLifestyle', image: '/hallallifestyle.jpg' },
-  ];
-
+export default function AllContent() {
   return (
-    <div className="min-h-screen bg-gray-50 pt-14">
-      {/* Top padding to account for fixed topbar (h-14) */}
-      <div className="max-w-6xl mx-auto p-4">
-        <h1 className="text-2xl font-bold mb-4 text-green-600">Explore Lijithad Communities</h1>
-
-        {/* Categories */}
-        <div className="flex flex-wrap gap-2 mb-6">
-          {categories.map((category) => (
-            <button
-              key={category.label}
-              className="flex items-center px-3 py-1 text-sm bg-white border border-gray-200 rounded-full hover:bg-gray-50 text-gray-700"
-            >
-              <span className="mr-1">{category.icon}</span>
-              {category.label}
-            </button>
-          ))}
-        </div>
-
-        {/* Recommended for You */}
-        <div className="mb-6">
-          <h2 className="text-lg font-semibold mb-2 text-gray-900">Recommended for you</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {recommendedCommunities.map((community) => (
-              <div key={community.name} className="bg-white p-4 rounded-lg shadow">
-                <img src={community.image} alt={community.name} className="w-12 h-12 rounded-full mb-2" />
-                <h3 className="font-semibold text-gray-900">{community.name}</h3>
-                <p className="text-sm text-gray-500">{community.members}</p>
-                <p className="text-sm text-gray-700">{community.description}</p>
-                <button className="mt-2 px-4 py-1 bg-green-500 text-white rounded-full text-sm hover:bg-green-600 transition-colors">
-                  Join
-                </button>
-              </div>
-            ))}
-          </div>
-          <button className="mt-2 text-green-600 text-sm hover:underline">Show more</button>
-        </div>
-
-        {/* More like Islamic News */}
-        <div className="mb-6">
-          <h2 className="text-lg font-semibold mb-2 text-gray-900">More like Islamic News</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {moreLikeIslamicNews.map((community) => (
-              <div key={community.name} className="bg-white p-4 rounded-lg shadow">
-                <img src={community.image} alt={community.name} className="w-12 h-12 rounded-full mb-2" />
-                <h3 className="font-semibold text-gray-900">{community.name}</h3>
-                <p className="text-sm text-gray-500">{community.members}</p>
-                <p className="text-sm text-gray-700">{community.description}</p>
-                <button className="mt-2 px-4 py-1 bg-green-500 text-white rounded-full text-sm hover:bg-green-600 transition-colors">
-                  Join
-                </button>
-              </div>
-            ))}
+    <div className="w-64 bg-white h-full border-r border-gray-200 p-4">
+      {/* Source Section */}
+      <div className="mb-6">
+        <h2 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Source</h2>
+        <div className="mb-2">
+          <p className="text-sm font-medium mb-1">Sort by</p>
+          <div className="pl-2 text-sm">
+            <p>Byinteresting &gt; 5 hr. ago</p>
+            <p>my grew braided carrots</p>
           </div>
         </div>
+        <ul className="space-y-1">
+          <li><button className="w-full text-left px-2 py-1 rounded hover:bg-gray-100">Hot</button></li>
+          <li><button className="w-full text-left px-2 py-1 rounded hover:bg-gray-100">New</button></li>
+          <li><button className="w-full text-left px-2 py-1 rounded hover:bg-gray-100">Top</button></li>
+          <li><button className="w-full text-left px-2 py-1 rounded hover:bg-gray-100">Rising</button></li>
+        </ul>
+      </div>
 
-        {/* Custom Feeds */}
-        <div>
-          <h2 className="text-lg font-semibold mb-2 text-gray-900">More Islamic Content</h2>
-          <div className="grid grid-cols-4 gap-2">
-            {customFeeds.map((feed) => (
-              <div key={feed.name} className="bg-white p-2 rounded-lg shadow flex items-center">
-                <img src={feed.image} alt={feed.name} className="w-8 h-8 rounded-full mr-2" />
-                <span className="text-sm text-gray-700">{feed.name}</span>
-              </div>
-            ))}
-          </div>
-        </div>
+      {/* Reddit Rules Section */}
+      <div className="mt-8 pt-4 border-t border-gray-200">
+        <h2 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Reddit Rules</h2>
+        <ul className="space-y-1 text-sm">
+          <li><button className="w-full text-left px-2 py-1 rounded hover:bg-gray-100">Privacy Policy</button></li>
+          <li><button className="w-full text-left px-2 py-1 rounded hover:bg-gray-100">User Agreement</button></li>
+          <li><button className="w-full text-left px-2 py-1 rounded hover:bg-gray-100">Accessibility</button></li>
+        </ul>
+        <p className="text-xs text-gray-500 mt-4">Reddit, Inc. © 2025. All rights reserved.</p>
       </div>
     </div>
   );
-};
-
-export default AllPage;
+}

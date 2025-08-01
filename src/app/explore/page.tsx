@@ -1,55 +1,53 @@
-// app/explore/page.tsx
 'use client';
 
 import React from 'react';
 
-const ExplorePage = () => {
-  // Mock data based on the image
+const Explorepage = () => {
+  // Mock data adapted for Lijithad Islamic categories
   const categories = [
     { label: 'All', icon: '🌐' },
-    { label: 'Internet Culture', icon: '😃' },
-    { label: 'Games', icon: '🎮' },
-    { label: 'Q&As & Stories', icon: '❓' },
-    { label: 'Movies & TV', icon: '🎬' },
-    { label: 'Technology', icon: '💻' },
-    { label: 'Places & Travel', icon: '🌍' },
-    { label: 'Pop Culture', icon: '🎉' },
-    { label: 'Business & Finance', icon: '💰' },
+    { label: 'Islamic News', icon: '📰' },
+    { label: 'Quran', icon: '📖' },
+    { label: 'Hadis', icon: '✨' },
+    { label: 'Dua', icon: '🙏' },
+    { label: 'Halal Living', icon: '🍲' },
+    { label: 'Islamic History', icon: '🕌' },
+    { label: 'Ramadan', icon: '🌙' },
   ];
 
   const recommendedCommunities = [
-    { name: 'overlocking', members: '312k members', description: 'Push your chips a little harder. Get tips and advice on overlocking.', image: '/overlocking.jpg' },
-    { name: 'techsupport', members: '3.2m members', description: 'Get help with tech problems and share your troubleshooting expertise.', image: '/techsupport.jpg' },
-    { name: 'Edgerunners', members: '133k members', description: 'For the anime, CYBERPUNK: EDGERUNNERS', image: '/edgerunners.jpg' },
-    { name: 'funny', members: '67m members', description: 'Get your daily fix of humor with posts that will have you laughing out loud.', image: '/funny.jpg' },
-    { name: 'VALORANT', members: '2.6m members', description: 'Join the battle and master your skills in Riot\'s tactical shooter.', image: '/valorant.jpg' },
+    { name: 'IslamicScholars', members: '45k members', description: 'Discuss latest fatwas and scholarly insights.', image: '/islamicscholars.jpg' },
+    { name: 'QuranRecitation', members: '120k members', description: 'Learn and share Quran recitation techniques.', image: '/quranrecitation.jpg' },
+    { name: 'HadisDaily', members: '78k members', description: 'Daily Hadis reflections and discussions.', image: '/hadisdaily.jpg' },
+    { name: 'HalalRecipes', members: '90k members', description: 'Share and explore Halal recipes.', image: '/halalrecipes.jpg' },
+    { name: 'DuaCorner', members: '30k members', description: 'Post and learn powerful Duas.', image: '/duacorner.jpg' },
   ];
 
-  const moreLikeTechnology = [
-    { name: 'gadgets', members: '23m members', description: 'Stay up-to-date on the latest and greatest gadgets, gizmos, and gear.', image: '/gadgets.jpg' },
-    { name: 'news', members: '31m members', description: 'Stay ahead of the news cycle and join the discussion on breaking news.', image: '/news.jpg' },
-    { name: 'nottheonion', members: '26m members', description: 'You won\'t believe these are real headlines. Share bizarre news stories.', image: '/nottheonion.jpg' },
+  const moreLikeIslamicNews = [
+    { name: 'IslamicEvents', members: '25k members', description: 'Stay updated on Islamic events worldwide.', image: '/islamicevents.jpg' },
+    { name: 'ShariaFinance', members: '15k members', description: 'Discuss Sharia-compliant financial options.', image: '/shariafinance.jpg' },
+    { name: 'MuslimTravel', members: '20k members', description: 'Halal travel tips and destinations.', image: '/muslimtravel.jpg' },
   ];
 
   const customFeeds = [
-    { name: 'r/cyberpunk2077', image: '/cyberpunk.jpg' },
-    { name: 'r/discordapp', image: '/discord.jpg' },
-    { name: 'r/NoStupidQuestions', image: '/nostupid.jpg' },
-    { name: 'r/pcmasterrace', image: '/pcmasterrace.jpg' },
+    { name: 'r/QuranMemorization', image: '/quranmemorization.jpg' },
+    { name: 'r/HadisWisdom', image: '/hadiswisdom.jpg' },
+    { name: 'r/IslamicCharity', image: '/islamiccharity.jpg' },
+    { name: 'r/HalalLifestyle', image: '/hallallifestyle.jpg' },
   ];
 
   return (
-    <div className="min-h-screen bg-gray-100 pt-14">
+    <div className="min-h-screen bg-gray-50 pt-14">
       {/* Top padding to account for fixed topbar (h-14) */}
       <div className="max-w-6xl mx-auto p-4">
-        <h1 className="text-2xl font-bold mb-4">Explore Communities</h1>
+        <h1 className="text-2xl font-bold mb-4 text-green-600">Explore Lijithad Communities</h1>
 
         {/* Categories */}
         <div className="flex flex-wrap gap-2 mb-6">
           {categories.map((category) => (
             <button
               key={category.label}
-              className="flex items-center px-3 py-1 text-sm bg-white border border-gray-200 rounded-full hover:bg-gray-50"
+              className="flex items-center px-3 py-1 text-sm bg-white border border-gray-200 rounded-full hover:bg-gray-50 text-gray-700"
             >
               <span className="mr-1">{category.icon}</span>
               {category.label}
@@ -59,32 +57,36 @@ const ExplorePage = () => {
 
         {/* Recommended for You */}
         <div className="mb-6">
-          <h2 className="text-lg font-semibold mb-2">Recommended for you</h2>
+          <h2 className="text-lg font-semibold mb-2 text-gray-900">Recommended for you</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {recommendedCommunities.map((community) => (
               <div key={community.name} className="bg-white p-4 rounded-lg shadow">
                 <img src={community.image} alt={community.name} className="w-12 h-12 rounded-full mb-2" />
-                <h3 className="font-semibold">{community.name}</h3>
+                <h3 className="font-semibold text-gray-900">{community.name}</h3>
                 <p className="text-sm text-gray-500">{community.members}</p>
                 <p className="text-sm text-gray-700">{community.description}</p>
-                <button className="mt-2 px-4 py-1 bg-blue-500 text-white rounded-full text-sm">Join</button>
+                <button className="mt-2 px-4 py-1 bg-green-500 text-white rounded-full text-sm hover:bg-green-600 transition-colors">
+                  Join
+                </button>
               </div>
             ))}
           </div>
-          <button className="mt-2 text-blue-500 text-sm">Show more</button>
+          <button className="mt-2 text-green-600 text-sm hover:underline">Show more</button>
         </div>
 
-        {/* More like Technology */}
+        {/* More like Islamic News */}
         <div className="mb-6">
-          <h2 className="text-lg font-semibold mb-2">More like technology</h2>
+          <h2 className="text-lg font-semibold mb-2 text-gray-900">More like Islamic News</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {moreLikeTechnology.map((community) => (
+            {moreLikeIslamicNews.map((community) => (
               <div key={community.name} className="bg-white p-4 rounded-lg shadow">
                 <img src={community.image} alt={community.name} className="w-12 h-12 rounded-full mb-2" />
-                <h3 className="font-semibold">{community.name}</h3>
+                <h3 className="font-semibold text-gray-900">{community.name}</h3>
                 <p className="text-sm text-gray-500">{community.members}</p>
                 <p className="text-sm text-gray-700">{community.description}</p>
-                <button className="mt-2 px-4 py-1 bg-blue-500 text-white rounded-full text-sm">Join</button>
+                <button className="mt-2 px-4 py-1 bg-green-500 text-white rounded-full text-sm hover:bg-green-600 transition-colors">
+                  Join
+                </button>
               </div>
             ))}
           </div>
@@ -92,12 +94,12 @@ const ExplorePage = () => {
 
         {/* Custom Feeds */}
         <div>
-          <h2 className="text-lg font-semibold mb-2">More technology</h2>
+          <h2 className="text-lg font-semibold mb-2 text-gray-900">More Islamic Content</h2>
           <div className="grid grid-cols-4 gap-2">
             {customFeeds.map((feed) => (
               <div key={feed.name} className="bg-white p-2 rounded-lg shadow flex items-center">
                 <img src={feed.image} alt={feed.name} className="w-8 h-8 rounded-full mr-2" />
-                <span className="text-sm">{feed.name}</span>
+                <span className="text-sm text-gray-700">{feed.name}</span>
               </div>
             ))}
           </div>
@@ -107,4 +109,4 @@ const ExplorePage = () => {
   );
 };
 
-export default ExplorePage;
+export default Explorepage;

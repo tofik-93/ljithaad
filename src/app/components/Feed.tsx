@@ -1,3 +1,4 @@
+// src/app/components/Feed.tsx
 'use client';
 
 import PostCard from "./PostCard";
@@ -13,74 +14,69 @@ interface PostData {
     upvotes: number;
     downvotes: number;
     comments: number;
-    subredditIcon?: string; // Make this optional in the interface as some might not have one
+    subredditIcon?: string;
 }
 
 const posts: PostData[] = [
     {
         id: '1',
-        image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80",
-        title: "Wildlife photographer Sha Lu captures the perfect moment a little critter prey looks directly at the camera while being captured by a predator.",
-        subreddit: "BeAmazed",
-        description: "Wildlife photographer Sha Lu captures the perfect moment a little critter prey looks directly at the camera while being captured by a predator.",
-        author: "ShaLuPhotos",
+        image: "/images/closedphoto.jpeg", // Updated to absolute path
+        title: "The Beauty of Sujood: A Moment of Closeness to Allah",
+        subreddit: "Islam",
+        description: "Reflecting on the serenity and humility found in prostration during Salah, a moment to connect deeply with Allah.",
+        author: "MuslimSeeker",
         timestamp: "2 hours ago",
         upvotes: 1234,
         downvotes: 50,
         comments: 215,
-        // Added a specific icon for this subreddit
-        // subredditIcon: "https://dribbble.com/shots/26281261-Golden-Hour-Blend", // Replace with a real URL or local path
+        subredditIcon: "/images/profile1.jpg", // Updated to absolute path
     },
     {
         id: '2',
-        image: "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80",
-        title: "Trump vein condition diagnosis...",
-        subreddit: "news",
-        description: "Trump diagnosed with chronic venous insufficiency.",
-        author: "PoliticalPundit",
+        image: "/images/hadis.jpeg",
+        title: "Hadith of the Day: Kindness to Others",
+        subreddit: "Hadith",
+        description: "The Prophet (PBUH) said: 'The best of you are those who are best to their families.' (Tirmidhi)",
+        author: "HadithLover",
         timestamp: "5 hours ago",
         upvotes: 876,
         downvotes: 300,
         comments: 450,
-        // Using a different icon for 'news'
-        subredditIcon: "https://dribbble.com/shots/26281261-Golden-Hour-Blend", // Replace with a real URL or local path
+        subredditIcon: "/images/rmdp.jpg",
     },
     {
         id: '3',
-        image: "https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80",
-        title: "House passes NPR, PBS cuts",
-        subreddit: "technology",
-        description: "Trump's $1.1 Billion Cuts to NPR, PBS Passed.",
-        author: "TechNewsDaily",
+        image: "/images/rmd.jpg", // Updated to absolute path
+        title: "Ramadan Preparation Tips for 2026",
+        subreddit: "Islam",
+        description: "Start preparing your heart and mind for Ramadan with these practical tips for spiritual growth.",
+        author: "FastingGuide",
         timestamp: "1 day ago",
         upvotes: 567,
         downvotes: 120,
         comments: 180,
-        // Another icon
-        // subredditIcon: "https://dribbble.com/shots/26281261-Golden-Hour-Blend", // Replace with a real URL or local path
+          subredditIcon: "/images/rmdp.jpg",
     },
     {
         id: '4',
-        image: "",
-        title: "Famed skydiver dead at 56",
-        subreddit: "news", // This post also belongs to 'news'
-        description: "Felix Baumgartner, Who Jumped From Space, Dies at 56.",
-        author: "BreakingReporter",
+        image: "/images/virtu.jpg", // Will handle empty image below
+        title: "Virtues of Surah Al-Kahf on Fridays",
+        subreddit: "Quran",
+        description: "Recite Surah Al-Kahf every Friday to be protected from the trials of Dajjal, as taught by the Prophet (PBUH).",
+        author: "QuranicWisdom",
         timestamp: "3 days ago",
         upvotes: 2100,
         downvotes: 80,
         comments: 320,
-        // Can reuse the 'news' icon or leave undefined to use default
-        // subredditIcon: "https://dribbble.com/shots/26281261-Golden-Hour-Blend",
+        subredditIcon: "/images/virtu.jpg",
     },
 ];
 
 const Feed = () => (
     <main
-        className="flex flex-col items-center w-full min-h-screen overflow-y-auto bg-gray-100 py-6 px-4 sm:px-6 lg:px-8"
+        className="flex flex-col items-center w-full min-h-screen overflow-y-auto bg-gray-100 py-4 px-2 sm:px-4 md:px-6 lg:px-8 xl:px-12"
     >
-
-        <div className="w-full max-w-2xl space-y-6">
+        <div className="w-full max-w-full sm:max-w-lg md:max-w-xl lg:max-w-2xl xl:max-w-3xl space-y-4">
             {posts.map((post) => (
                 <div key={post.id} className="w-full">
                     <PostCard
@@ -94,7 +90,7 @@ const Feed = () => (
                         upvotes={post.upvotes}
                         downvotes={post.downvotes}
                         comments={post.comments}
-                        // subredditIcon={post.subredditIcon} // Pass the specific icon here
+                        subredditIcon={post.subredditIcon}
                     />
                 </div>
             ))}

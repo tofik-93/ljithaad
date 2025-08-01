@@ -23,13 +23,13 @@ const TopBar = () => {
 
   return (
     <header className="fixed top-0 left-0 right-0 bg-white z-50 flex items-center px-4 py-2 h-14 shadow-sm">
-      <div className="flex items-center w-full max-w-screen-xl mx-auto">
+      <div className="flex items-center w-full mx-auto justify-between">
         {/* Logo on the left */}
-        <Link href="/" className="flex items-center mr-3">
+        <Link href="/" className="flex items-center mr-4">
           <img
-            src="/redditlogo.jpeg"
+            src="/images/llogo.png"
             alt="Reddit Logo"
-            className="w-6 h-6 mr-1"
+            className="w-6 h-6 mr-2"
           />
           <span className="font-bold text-lg text-orange-500 hidden sm:inline">
             Ljithad
@@ -37,8 +37,8 @@ const TopBar = () => {
         </Link>
 
         {/* Centered search bar with icon */}
-        <div className="flex-1 flex justify-center px-2">
-          <div className="flex items-center bg-gray-100 border border-gray-200 rounded-2xl p-1 w-full max-w-md sm:max-w-lg">
+        <div className="flex-1 flex justify-center px-2 max-w-lg sm:max-w-xl md:max-w-2xl">
+          <div className="flex items-center bg-gray-100 border border-gray-200 rounded-2xl p-1 w-full">
             <SearchIcon className="text-gray-500 text-lg mx-2" />
             <input
               type="text"
@@ -49,7 +49,7 @@ const TopBar = () => {
         </div>
 
         {/* Icons and buttons on the right */}
-        <div className="flex items-center gap-2 ml-3">
+        <div className="flex items-center space-x-2 ml-4">
           {/* Ads Icon */}
           <button
             className="p-1 rounded-full border-2 border-gray-200 bg-white hover:bg-gray-100"
@@ -145,7 +145,7 @@ const TopBar = () => {
                       onClick={() => setIsDropdownOpen(false)}
                     >
                       <AttachMoneyIcon className="mr-2 text-gray-500" />
-                      Earn (earn cash on lijithad)
+                      Earn (earn cash on ljithad)
                     </button>
                   </li>
                   <li>
@@ -173,7 +173,7 @@ const TopBar = () => {
                       onClick={() => setIsDropdownOpen(false)}
                     >
                       <CampaignIcon className="mr-2 text-gray-500" />
-                      Advertise on Lijithad
+                      Advertise on Ljithad
                     </button>
                   </li>
                   <li>
@@ -182,7 +182,7 @@ const TopBar = () => {
                       onClick={() => setIsDropdownOpen(false)}
                     >
                       <StarBorderIcon className="mr-2 text-gray-500" />
-                      Try Lijithad Pro BETA
+                      Try Ljithad Pro BETA
                     </button>
                   </li>
                   <li>
@@ -203,6 +203,8 @@ const TopBar = () => {
                       Logout
                     </button>
                   </li>
+
+
                 </ul>
               </div>
             )}
