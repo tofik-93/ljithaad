@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -11,6 +11,15 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import MenuOpenIcon from '@mui/icons-material/MenuOpen';
 import MenuIcon from '@mui/icons-material/Menu';
+import GroupIcon from '@mui/icons-material/Group';
+import PersonIcon from '@mui/icons-material/Person';
+import SettingsIcon from '@mui/icons-material/Settings';
+
+type NavItem = {
+  label: string;
+  icon: React.ElementType | (({ active }: { active: boolean }) => JSX.Element);
+  path?: string;
+};
 
 const Sidebar = () => {
   const [activeNav, setActiveNav] = useState('Home');
@@ -21,10 +30,11 @@ const Sidebar = () => {
   const [popCultureOpen, setPopCultureOpen] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [communitiesOpen, setCommunitiesOpen] = useState(true);
 
   const router = useRouter();
 
-  const navItems = [
+  const navItems: NavItem[] = [
     { label: 'Home', icon: HomeIcon, path: '/' },
     { label: 'Popular', icon: SearchIcon, path: '/popular' },
     { label: 'Answers', icon: QuestionAnswerIcon, path: '/answers' },
@@ -94,6 +104,15 @@ const Sidebar = () => {
       { label: 'Anime & Manga', path: '/pop-culture/anime' },
     ],
   };
+
+  // Mock communities data - replace with your actual data
+  const userCommunities = [
+    { name: 'r/ProgrammerHumor', icon: '💻' },
+    { name: 'r/AskReddit', icon: '❓' },
+    { name: 'r/WorldNews', icon: '🌎' },
+    { name: 'r/Gaming', icon: '🎮' },
+    { name: 'r/Movies', icon: '🎬' },
+  ];
 
   return (
     <>
@@ -197,13 +216,96 @@ const Sidebar = () => {
                 flex items-center py-2 text-gray-600 text-sm cursor-pointer hover:bg-gray-100 rounded-lg mx-2
                 ${isCollapsed ? 'justify-center px-0' : 'px-6'}
               `}
-              onClick={() => setIsMobileMenuOpen(false)}
+              onClick={() =>{ 
+                router.push('/custfeedback');
+                setIsMobileMenuOpen(false)}}
             >
               <span className={`text-xl ${isCollapsed ? 'mr-0' : 'mr-4'} text-gray-600`}>
                 <AddIcon fontSize='small' />
               </span>
               {!isCollapsed && 'Create a custom feed'}
             </li>
+
+            {/* Divider */}
+            <hr className='border-t border-gray-200 my-4 mx-4' />
+
+            {/* COMMUNITIES Section */}
+            <li className={`
+              flex items-center justify-between py-2 cursor-pointer
+              ${isCollapsed ? 'justify-center px-0' : 'px-6'}
+              hover:bg-gray-100 rounded-lg mx-2
+            `}
+              onClick={() => setCommunitiesOpen(!communitiesOpen)}
+            >
+              <div className='flex items-center'>
+                <span className={`text-xl ${isCollapsed ? 'mr-0' : 'mr-4'}`}>
+                  <GroupIcon fontSize='small' />
+                </span>
+                {!isCollapsed && (
+                  <>
+                    <span className='text-sm font-medium'>Communities</span>
+                    <span className='ml-auto text-sm text-gray-400'>
+                      {communitiesOpen ? (
+                        <KeyboardArrowDownIcon fontSize='small' />
+                      ) : (
+                        <KeyboardArrowRightIcon fontSize='small' />
+                      )}
+                    </span>
+                  </>
+                )}
+              </div>
+            </li>
+
+            {communitiesOpen && !isCollapsed && (
+              <div className='pl-6 pr-2'>
+                {/* Create Community Button */}
+                <div
+                  className='flex items-center py-2 text-blue-500 text-sm cursor-pointer hover:bg-gray-100 rounded-lg pl-2'
+                  onClick={() => router.push('/community')}
+                >
+                  <AddIcon fontSize='small' className='mr-3' />
+                  <span>Create Community</span>
+                </div>
+
+                {/* Empty state or user communities */}
+                {userCommunities.length === 0 ? (
+                  <div className='py-4 text-center text-gray-500 text-sm'>
+                    <p>No communities yet</p>
+                    <button 
+                      className='mt-2 text-blue-500 hover:underline'
+                      onClick={() => router.push('/communities/discover')}
+                    >
+                      Discover communities
+                    </button>
+                  </div>
+                ) : (
+                  <>
+                    {/* User Communities List */}
+                    {userCommunities.map((community, index) => (
+                      <div
+                        key={index}
+                        className='flex items-center py-2 text-gray-700 text-sm cursor-pointer hover:bg-gray-100 rounded-lg pl-2'
+                        onClick={() => router.push(`/${community.name}`)}
+                      >
+                        <span className='mr-3'>{community.icon}</span>
+                        <span>{community.name}</span>
+                      </div>
+                    ))}
+
+                    {/* Empty rows */}
+                    {[...Array(5 - userCommunities.length)].map((_, index) => (
+                      <div
+                        key={`empty-${index}`}
+                        className='flex items-center py-2 text-gray-400 text-sm rounded-lg pl-2'
+                      >
+                        <span className='mr-3'>○</span>
+                        <span className='text-gray-300'>Empty slot</span>
+                      </div>
+                    ))}
+                  </>
+                )}
+              </div>
+            )}
 
             {/* Divider */}
             <hr className='border-t border-gray-200 my-4 mx-4' />
@@ -420,28 +522,38 @@ const Sidebar = () => {
             {/* Divider */}
             <hr className='border-t border-gray-200 my-4 mx-4' />
 
-            {/* Resources Section */}
-            {!isCollapsed && (
-              <li className='px-6 text-gray-500 font-bold text-xs mb-1 flex items-center justify-between uppercase'>
-                Resources
-              </li>
-            )}
-            <ul className='list-none pl-6 mb-2'>
-              <li
-                className={`
-                  flex items-center py-2 text-gray-700 text-sm hover:bg-gray-100 rounded-lg pr-4 cursor-pointer
-                  ${isCollapsed ? 'justify-center pl-0' : 'pl-0'}
-                `}
-                onClick={() => {
-                  setActiveNav('About Reddit');
-                  router.push('/about');
-                  setIsMobileMenuOpen(false);
-                }}
-              >
-                <span className={`text-xl ${isCollapsed ? 'mr-0' : 'mr-3'}`}>ℹ️</span>
-                {!isCollapsed && 'About Reddit'}
-              </li>
-            </ul>
+            {/* User Profile Section */}
+            <li className={`
+              flex items-center py-2 cursor-pointer
+              ${isCollapsed ? 'justify-center px-0' : 'px-6'}
+              hover:bg-gray-100 rounded-lg mx-2
+            `}
+              onClick={() => router.push('/profile')}
+            >
+              <span className={`text-xl ${isCollapsed ? 'mr-0' : 'mr-4'}`}>
+                <PersonIcon fontSize='small' />
+              </span>
+              {!isCollapsed && (
+                <div className='flex flex-col'>
+                  <span className='text-sm font-medium'>Your Profile</span>
+                  <span className='text-xs text-gray-500'>u/username</span>
+                </div>
+              )}
+            </li>
+
+            {/* Settings */}
+            <li className={`
+              flex items-center py-2 cursor-pointer
+              ${isCollapsed ? 'justify-center px-0' : 'px-6'}
+              hover:bg-gray-100 rounded-lg mx-2
+            `}
+              onClick={() => router.push('/settings')}
+            >
+              <span className={`text-xl ${isCollapsed ? 'mr-0' : 'mr-4'}`}>
+                <SettingsIcon fontSize='small' />
+              </span>
+              {!isCollapsed && <span className='text-sm'>Settings</span>}
+            </li>
           </ul>
         </nav>
       </aside>
